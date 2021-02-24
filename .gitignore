@@ -1,0 +1,9 @@
+# Object file
+*.o
+
+# Ada Library Information
+*.ali
+*.exe
+
+*.bak.*
+*.bk.*
