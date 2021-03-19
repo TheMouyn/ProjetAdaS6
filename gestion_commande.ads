@@ -3,24 +3,16 @@ use outils, gestion_commande;
 
 package body gestion_commande is
 
+   type T_nomArticle is (potionInvisibilite, potionMetamorphose, baguette, epee, filtreAmour, sortImmobilisation);
 
    type T_article is record
-      nomArticle : T_mot := (others => ' ');
-      prix : T_prix;
-      stockDispo : integer;
+      -- permet de stocker les informations prix d'article ou quantite stock, quantite commande
+      prix : T_prix := (0,0);
+      quantite : integer := 0;
    end record;
 
-   type T_commandeArticle is record
-      -- permet de gerer la quantite d'un article desire
-      idArticle : integer;
-      qttVoulu : integer;
-   end record;
-
-   -- permet de gérer les articles et leurs stock et prix
-   type T_stock is array (integer range 1..6) of T_article;
-
-   -- ce tableau permet de lister les articles dans une commande
-   type T_table_article is array (integer range 1..6) of T_commandeArticle;
+   -- ce tableau permet de lister les articles dans une commande, le stock, mais aussi le prix des articles
+   type T_table_article is array (T_nomArticle) of T_article;
 
    type T_commande is record
       identiteClient : T_identite;

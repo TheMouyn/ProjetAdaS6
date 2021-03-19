@@ -12,7 +12,7 @@ package gestion_personnel is
       categorie : T_categorie;
       nuMagique : integer;
       emprinte : integer;
-      nbFoisMdpFaux : integer; -- permet de denombrer le nombre de fois ou le mdp a ete saisie incorect. Quand > 3 mdp doit etre reset et connexion impossible
+      mdpFaux : boolean; -- permet de savoir si le mot de passe est valide ou non
    end record;
 
    -- liste du personnel
