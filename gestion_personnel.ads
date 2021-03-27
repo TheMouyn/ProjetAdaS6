@@ -29,4 +29,7 @@ package gestion_personnel is
    end record;
 
 
+   -- prototype des procedures et fonctions
+   procedure iniPersonnel(tete : in out T_PteurPersonnel);
+
 end gestion_personnel;
