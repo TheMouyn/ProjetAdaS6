@@ -9,6 +9,12 @@ package outils is
       nom, prenom : T_mot := (others => ' ');
    end record;
 
+   function desirQuitter return boolean;
+   procedure saisieInteger(bornInf, bornSupp : in integer; nombre : out integer);
+   procedure saisieBoolean(bool : out boolean);
+   procedure afficherTexte(texte : in T_mot);
+   procedure saisieString(texte : out T_mot);
+
 
 
 end outils;
