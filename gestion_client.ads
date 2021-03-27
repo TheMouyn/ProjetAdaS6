@@ -17,4 +17,8 @@ package gestion_prix is
    end record;
 
 
+   -- prototype des procedures et fonctions
+   procedure initClient(racine : in out T_arbreClient);
+
+
 end gestion_prix;
