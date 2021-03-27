@@ -17,15 +17,15 @@ package gestion_personnel is
 
    -- liste du personnel
    type T_cellPersonnel;
-   type T_Pteur_Personnel is access T_cellPersonnel;
+   type T_PteurPersonnel is access T_cellPersonnel;
    type T_cellPersonnel is record
       val : T_personnel;
-      suiv : T_Pteur_Personnel;
+      suiv : T_PteurPersonnel;
    end record;
 
    -- file de personnel : permmet de gerer les demande de mdp pour Mandrake
    type T_filePersonnel is record
-      tete, fin : T_Pteur_Personnel;
+      tete, fin : T_PteurPersonnel;
    end record;
 
 

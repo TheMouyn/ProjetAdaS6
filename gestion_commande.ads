@@ -26,15 +26,15 @@ package body gestion_commande is
 
    -- liste commande
    type T_cellCommande;
-   type T_Pteur_Commande is access T_cellCommande;
+   type T_PteurCommande is access T_cellCommande;
    type T_cellCommande is record
       val : T_commande;
-      suiv : T_Pteur_Commande;
+      suiv : T_PteurCommande;
    end record;
 
    -- file de commande
    type T_fileCommande is record
-      tete, fin : T_Pteur_Commande;
+      tete, fin : T_PteurCommande;
    end record;
 
    -- gestion du fichier d'archive
