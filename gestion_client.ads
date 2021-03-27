@@ -4,7 +4,7 @@ use outils, gestion_prix, gestion_commande;
 package gestion_prix is
    type T_client is record
       identite : T_identite;
-      enAttentePaiement : T_Pteur_Commande; -- pointeur de liste de listeCommande en attente de paiement
+      enAttentePaiement : T_PteurCommande; -- pointeur de liste de listeCommande en attente de paiement
       montantDu : T_prix;
    end record;
 
