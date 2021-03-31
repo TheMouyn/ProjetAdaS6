@@ -1,7 +1,7 @@
 with outils, gestion_prix, gestion_commande;
 use outils, gestion_prix, gestion_commande;
 
-package gestion_prix is
+package gestion_client is
    type T_client is record
       identite : T_identite;
       enAttentePaiement : T_PteurCommande; -- pointeur de liste de listeCommande en attente de paiement
@@ -21,4 +21,4 @@ package gestion_prix is
    procedure initClient(racine : in out T_arbreClient);
 
 
-end gestion_prix;
+end gestion_client;

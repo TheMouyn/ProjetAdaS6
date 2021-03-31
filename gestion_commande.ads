@@ -1,7 +1,7 @@
-with outils, gestion_commande, sequential_io;
-use outils, gestion_commande;
+with outils, gestion_prix, sequential_io;
+use outils, gestion_prix;
 
-package body gestion_commande is
+package gestion_commande is
 
    type T_nomArticle is (potionInvisibilite, potionMetamorphose, baguette, epee, filtreAmour, sortImmobilisation);
 
