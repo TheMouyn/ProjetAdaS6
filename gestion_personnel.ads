@@ -7,7 +7,6 @@ package gestion_personnel is
    type T_categorie is (nain, elfe, magicien, grandMagicien);
 
    type T_personnel is record
-      identite : T_identite;
       pseudo : T_mot := (others =>' ');
       categorie : T_categorie;
       nuMagique : integer;
