@@ -45,6 +45,7 @@ package gestion_commande is
 
    -- prototype des procédures
    procedure initStock(tabStock : in out T_table_article);
+   procedure initCommandeEnAttenteDePreparation(fileCommandeEnAttente : in out T_fileCommande);
 
 
 end gestion_commande;
