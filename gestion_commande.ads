@@ -43,4 +43,8 @@ package gestion_commande is
    varFichier_T_commande : Fichier_archive_commande.file_type;
 
 
+   -- prototype des procédures
+   procedure initStock(tabStock : in out T_table_article);
+
+
 end gestion_commande;
