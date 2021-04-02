@@ -19,6 +19,8 @@ package gestion_client is
 
    -- prototype des procedures et fonctions
    procedure initClient(racine : in out T_arbreClient);
+   procedure initCommandeEnAttenteDeReglement(racine : in out T_arbreClient);
+   
 
 
 end gestion_client;
