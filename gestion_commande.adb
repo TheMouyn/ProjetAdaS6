@@ -141,4 +141,56 @@ package body gestion_commande is
 
    end initCommandeEnAttenteDePreparation;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure initCommandeEnAttenteDeFacturation(fileCommandeEnAttente : in out T_fileCommande) is
+      procedure enfiler(file : in out T_fileCommande; identite : in T_identite; nuCommande : in integer; article : in T_table_article; preparateur : in T_mot) is
+
+      begin -- enfiler
+         if file.tete = null then
+            file.tete := new T_cellCommande'((identite, nuCommande, article, preparateur, (0, 0)), null);
+            file.fin := file.tete;
+
+         else
+            file.fin.suiv := new T_cellCommande'((identite, nuCommande, article, preparateur, (0, 0)), null);
+            file.fin := file.fin.suiv;
+
+         end if;
+
+      end enfiler;
+
+
+      lePrenom, leNom, lePreparateur : T_mot := (others => ' ');
+      article : T_table_article;
+   begin -- initCommandeEnAttenteDeFacturation
+
+      lePrenom(1..7) := "VINCENT";
+      leNom(1..5) := "CAREL";
+      lePreparateur(1..5) := "GIMLI";
+      article(potionInvisibilite).quantite := 2;
+      article(potionMetamorphose).quantite := 0;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 2;
+      article(filtreAmour).quantite := 2;
+      article(sortImmobilisation).quantite := 0;
+      enfiler(fileCommandeEnAttente, (leNom, lePrenom), 10, article, lePreparateur);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' '); lePreparateur := (others => ' ');
+      lePrenom(1..5) := "ALICE";
+      leNom(1..6) := "GALVIN";
+      lePreparateur(1..6) := "THORIN";
+      article(potionInvisibilite).quantite := 0;
+      article(potionMetamorphose).quantite := 4;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 0;
+      article(sortImmobilisation).quantite := 12;
+      enfiler(fileCommandeEnAttente, (leNom, lePrenom), 11, article, lePreparateur);
+
+
+   end initCommandeEnAttenteDeFacturation;
+
+
 end gestion_commande;
