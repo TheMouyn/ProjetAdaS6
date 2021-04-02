@@ -193,4 +193,108 @@ package body gestion_commande is
    end initCommandeEnAttenteDeFacturation;
 
 
+-- ----------------------------------------------------------------------------------------------
+   procedure initCommandeAnnulee is
+      -- si le prix de la commande est a (0, 0) c'est une commande annulee, si non c'est une commande reglee
+
+      procedure mettreEnFichier(identite : in T_identite; nuCommande : in integer; article : in T_table_article) is
+         maCommande : T_commande;
+
+      begin -- mettreEnFichier
+         maCommande := (identite, nuCommande, article, (others=>' '), (0, 0));
+         open(varFichier_T_commande, Append_file, "FichierArchive");
+         write(varFichier_T_commande, maCommande);
+         close(varFichier_T_commande);
+
+      end mettreEnFichier;
+
+
+      lePrenom, leNom : T_mot := (others => ' ');
+      article : T_table_article;
+   begin -- initCommandeAnnulee
+      create(varFichier_T_commande, name=>"FichierArchive");
+      close(varFichier_T_commande);
+
+
+      lePrenom(1..7) := "ANAELLE";
+      leNom(1..8) := "BEAUPRES";
+      article(potionInvisibilite).quantite := 0;
+      article(potionMetamorphose).quantite := 2;
+      article(baguette).quantite := 4;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 0;
+      article(sortImmobilisation).quantite := 5;
+      mettreEnFichier((leNom, lePrenom), 2, article);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' ');
+      lePrenom(1..7) := "VINCENT";
+      leNom(1..5) := "CAREL";
+      article(potionInvisibilite).quantite := 0;
+      article(potionMetamorphose).quantite := 0;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 10;
+      article(sortImmobilisation).quantite := 12;
+      mettreEnFichier((leNom, lePrenom), 3, article);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' ');
+      lePrenom(1..5) := "BELLE";
+      leNom(1..9) := "SEBASTIEN";
+      article(potionInvisibilite).quantite := 2;
+      article(potionMetamorphose).quantite := 0;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 2;
+      article(filtreAmour).quantite := 0;
+      article(sortImmobilisation).quantite := 0;
+      mettreEnFichier((leNom, lePrenom), 4, article);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' ');
+      lePrenom(1..5) := "PETIT";
+      leNom(1..6) := "POUCET";
+      article(potionInvisibilite).quantite := 5;
+      article(potionMetamorphose).quantite := 0;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 0;
+      article(sortImmobilisation).quantite := 4;
+      mettreEnFichier((leNom, lePrenom), 5, article);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' ');
+      lePrenom(1..7) := "BLANCHE";
+      leNom(1..5) := "NEIGE";
+      article(potionInvisibilite).quantite := 0;
+      article(potionMetamorphose).quantite := 0;
+      article(baguette).quantite := 12;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 0;
+      article(sortImmobilisation).quantite := 0;
+      mettreEnFichier((leNom, lePrenom), 6, article);
+
+
+
+      lePrenom := (others => ' '); leNom := (others => ' ');
+      lePrenom(1..5) := "ALICE";
+      leNom(1..6) := "GALVIN";
+      article(potionInvisibilite).quantite := 0;
+      article(potionMetamorphose).quantite := 10;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 0;
+      article(filtreAmour).quantite := 10;
+      article(sortImmobilisation).quantite := 12;
+      mettreEnFichier((leNom, lePrenom), 7, article);
+
+
+
+   end initCommandeAnnulee;
+
+
+
 end gestion_commande;

@@ -47,6 +47,6 @@ package gestion_commande is
    procedure initStock(tabStock : in out T_table_article);
    procedure initCommandeEnAttenteDePreparation(fileCommandeEnAttente : in out T_fileCommande);
    procedure initCommandeEnAttenteDeFacturation(fileCommandeEnAttente : in out T_fileCommande);
-
+   procedure initCommandeAnnulee;
 
 end gestion_commande;
