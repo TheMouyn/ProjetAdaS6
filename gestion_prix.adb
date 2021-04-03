@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console;
+use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console;
 
 
 package body gestion_prix is

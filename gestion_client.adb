@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande, nt_console;
+use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande, nt_console;
 
 package body gestion_client is
 
@@ -218,7 +218,7 @@ package body gestion_client is
 
          else
             ajoutClient(racine.fd, identite);
-            
+
          end if;
 
       end if;

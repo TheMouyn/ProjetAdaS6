@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, Ada.Characters.Handling;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, Ada.Characters.Handling;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, Ada.Characters.Handling, nt_console;
+use ada.text_io, ada.integer_text_io, ada.float_text_io, Ada.Characters.Handling, nt_console;
 
 package body outils is
 
