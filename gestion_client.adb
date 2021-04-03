@@ -193,5 +193,37 @@ package body gestion_client is
 
    end clientExiste;
 
+-- ----------------------------------------------------------------------------------------------
+
+
+   procedure ajoutClient(racine : in out T_arbreClient; identite : in T_identite) is
+      -- permet d'ajouter un client dans l'arbre
+      -- attention cette procedure ne permet pas la verification si le client existe deja
+
+   begin -- ajoutClient
+      if racine = null then
+         racine := new T_noeudClient'((identite, null, (0, 0)), null, null);
+      else
+         if identite.nom < racine.val.identite.nom then
+            ajoutClient(racine.fg, identite);
+
+         elsif identite.nom = racine.val.identite.nom then
+            if identite.prenom < racine.val.identite.prenom then
+               ajoutClient(racine.fg, identite);
+
+            else
+               ajoutClient(racine.fd, identite);
+
+            end if;
+
+         else
+            ajoutClient(racine.fd, identite);
+            
+         end if;
+
+      end if;
+
+   end ajoutClient;
+
 
 end gestion_client;
