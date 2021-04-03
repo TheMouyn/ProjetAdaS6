@@ -157,5 +157,41 @@ package body gestion_client is
 
    end initCommandeEnAttenteDeReglement;
 
+-- ----------------------------------------------------------------------------------------------
+
+   function clientExiste(racine : in T_arbreClient; identite : in T_identite) return boolean is
+      -- permet de savoir si un client existe dans l'arbre. renvoi TRUE si oui et FALSE si non
+      -- Attention la casse est importante
+
+   begin -- clientExiste
+      if racine = null then
+         return FALSE;
+
+      else
+         if identite.nom < racine.val.identite.nom then
+            return (FALSE OR clientExiste(racine.fg, identite));
+
+         elsif identite.nom = racine.val.identite.nom then
+            if identite.prenom < racine.val.identite.prenom then
+               return (FALSE OR clientExiste(racine.fg, identite));
+
+            elsif identite.prenom = racine.val.identite.prenom then
+               return TRUE;
+
+            else
+               return (FALSE OR clientExiste(racine.fd, identite));
+
+            end if;
+
+         else
+            return (FALSE OR clientExiste(racine.fd, identite));
+
+
+         end if;
+
+      end if;
+
+   end clientExiste;
+
 
 end gestion_client;
