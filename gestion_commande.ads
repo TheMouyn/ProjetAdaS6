@@ -48,5 +48,6 @@ package gestion_commande is
    procedure initCommandeEnAttenteDePreparation(fileCommandeEnAttente : in out T_fileCommande);
    procedure initCommandeEnAttenteDeFacturation(fileCommandeEnAttente : in out T_fileCommande);
    procedure initCommandeAnnulee;
+   procedure enfilerCommande(file : in out T_fileCommande; maCommande : in T_commande);
 
 end gestion_commande;

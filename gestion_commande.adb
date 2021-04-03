@@ -295,6 +295,23 @@ package body gestion_commande is
 
    end initCommandeAnnulee;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure enfilerCommande(file : in out T_fileCommande; maCommande : in T_commande) is
+
+   begin -- enfilerCommande
+      if file.tete = null then
+         file.tete := new T_cellCommande'(maCommande, null);
+         file.fin := file.tete;
+
+      else
+         file.fin.suiv := new T_cellCommande'(maCommande, null);
+         file.fin := file.fin.suiv;
+
+      end if;
+
+   end enfilerCommande;
+
 
 
 end gestion_commande;
