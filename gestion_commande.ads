@@ -50,5 +50,6 @@ package gestion_commande is
    procedure initCommandeAnnulee;
    procedure enfilerCommande(file : in out T_fileCommande; maCommande : in T_commande);
    procedure affichierNomArticle(article : in T_nomArticle);
+   function commandeEstVide(laCommande : in T_commande) return boolean;
 
 end gestion_commande;

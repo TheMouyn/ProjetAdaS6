@@ -335,5 +335,26 @@ package body gestion_commande is
    end affichierNomArticle;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   function commandeEstVide(laCommande : in T_commande) return boolean is
+      qtt : integer := 0;
+
+   begin -- commandeEstVide
+      for i in laCommande.articleCommande'range loop
+         qtt := qtt + laCommande.articleCommande(i).quantite;
+
+      end loop;
+
+      if qtt = 0 then
+         return TRUE;
+      else
+         return FALSE;
+
+      end if;
+
+   end commandeEstVide;
+
+
 
 end gestion_commande;
