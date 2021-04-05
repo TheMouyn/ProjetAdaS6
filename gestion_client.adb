@@ -225,5 +225,95 @@ package body gestion_client is
 
    end ajoutClient;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure nouvelleCommande(fileCommandeEnAttente : in out T_fileCommande; racineClient : in out T_arbreClient; nuCommande : in out integer) is
+      -- permet de créer une nouvelle commande et l'enfiler dans la file
+      -- si le client n'existe pas, le créé
+      -- le nuCommande représente le numéro de commande précédent, il faut donc faire +1
+      leClient : T_identite;
+      laCommande : T_commande;
+      confirmation : boolean;
+
+   begin -- nouvelleCommande
+      put_line("Prenom du client : ");
+      saisieString(leClient.prenom);
+      new_line;
+
+      put_line("Nom du client : ");
+      saisieString(leClient.nom);
+      new_line;
+
+      put_line("Saisir la quantite des article que vous souhaitez : ");
+      for i in laCommande.articleCommande'range loop
+         affichierNomArticle(i);
+         put(" : ");
+         saisieInteger(0, integer'last, laCommande.articleCommande(i).quantite);
+
+      end loop;
+
+      clear_screen(black);
+      put_line("Vous allez ajouter cette commande : ");
+      new_line;
+
+      put("Commande numero ");
+      put(nuCommande+1, 1);
+      new_line;
+      new_line;
+
+      put("Client : ");
+      afficherTexte(leClient.prenom);
+      put(" ");
+      afficherTexte(leClient.nom);
+      new_line;
+      new_line;
+
+      if not commandeEstVide(laCommande) then
+         for i in laCommande.articleCommande'range loop
+            affichierNomArticle(i);
+            put(" : ");
+            put(laCommande.articleCommande(i).quantite, 1);
+            new_line;
+
+         end loop;
+
+         new_line;
+         new_line;
+         put_line("Vous confirmer ?");
+         saisieBoolean(confirmation);
+
+
+         if confirmation then
+            if not clientExiste(racineClient, leClient) then
+               -- si le client n'existe pas dans l'arbre on l'ajoute
+               ajoutClient(racineClient, leClient);
+               put_line("Le client a ete ajoute");
+
+            end if;
+            laCommande.identiteClient := leClient;
+            nuCommande := nuCommande +1;
+            laCommande.nuCommande := nuCommande;
+            laCommande.montant := (0, 0);
+
+            enfilerCommande(fileCommandeEnAttente, laCommande);
+            put_line("La commande a ete ajoutee");
+
+         else
+            put_line("Ajout annule, retour au menu principal");
+
+         end if;
+
+
+      else
+         put_line("La commande est vide !");
+
+
+      end if;
+
+
+
+
+   end nouvelleCommande;
+
 
 end gestion_client;
