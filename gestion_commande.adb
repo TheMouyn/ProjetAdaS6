@@ -313,5 +313,27 @@ package body gestion_commande is
    end enfilerCommande;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure affichierNomArticle(article : in T_nomArticle) is
+
+   begin -- affichierNomArticle
+      -- potionInvisibilite, potionMetamorphose, baguette, epee, filtreAmour, sortImmobilisation
+
+      case article is
+         when potionInvisibilite => put("Potion d'invisibilite");
+         when potionMetamorphose => put("Potion de metamorphose");
+         when baguette => put("Baguette");
+         when epee => put("Epee");
+         when filtreAmour => put("Filtre d'amour");
+         when sortImmobilisation => put("Sort d'immobilisation");
+
+
+      end case;
+
+
+   end affichierNomArticle;
+
+
 
 end gestion_commande;
