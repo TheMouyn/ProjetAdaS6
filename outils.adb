@@ -79,8 +79,8 @@ package body outils is
        texte := (others => ' ');
        put("=> ");
        get_line(texte, k); new_line;
-       exit when k<=50;
-       put("Votre mot est superieur a 50 caracteres, veuillez ecrire un mot plus court"); new_line;
+       exit when k<=50 and k>0;
+       put("Votre mot est vide ou supperieur a 50 caracteres, veuillez réessayer"); new_line;
      end loop;
 
      -- traitement de la casse : on stock tous les t_mot en majuscule
