@@ -53,5 +53,6 @@ package gestion_commande is
    function commandeEstVide(laCommande : in T_commande) return boolean;
    procedure visuCommandeEnAttentePrepa(tete : in T_PteurCommande);
    procedure visuCommandeEnAttentePrepaClient(tete : in T_PteurCommande; leClient : in T_identite);
+   procedure ajoutEnArchive(laCommande : in T_commande);
 
 end gestion_commande;

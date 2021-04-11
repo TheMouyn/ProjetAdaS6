@@ -452,6 +452,19 @@ package body gestion_commande is
    end visuCommandeEnAttentePrepaClient;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure ajoutEnArchive(laCommande : in T_commande) is
+
+   begin -- ajoutEnArchive
+      open(varFichier_T_commande, Append_file, "FichierArchive");
+      write(varFichier_T_commande, laCommande);
+      close(varFichier_T_commande);
+
+   end ajoutEnArchive;
+
+
+
 
 
 
