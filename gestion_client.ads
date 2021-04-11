@@ -23,5 +23,6 @@ package gestion_client is
    function clientExiste(racine : in T_arbreClient; identite : in T_identite) return boolean;
    procedure ajoutClient(racine : in out T_arbreClient; identite : in T_identite);
    procedure nouvelleCommande(fileCommandeEnAttente : in out T_fileCommande; racineClient : in out T_arbreClient; nuCommande : in out integer);
+   procedure annulerCommande(file : in out T_fileCommande; racineArbre : in T_arbreClient);
 
 end gestion_client;
