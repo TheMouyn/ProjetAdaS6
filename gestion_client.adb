@@ -236,13 +236,7 @@ package body gestion_client is
       confirmation : boolean;
 
    begin -- nouvelleCommande
-      put_line("Prenom du client : ");
-      saisieString(leClient.prenom);
-      new_line;
-
-      put_line("Nom du client : ");
-      saisieString(leClient.nom);
-      new_line;
+      saisieIdentite(leClient);
 
       put_line("Saisir la quantite des article que vous souhaitez : ");
       for i in laCommande.articleCommande'range loop

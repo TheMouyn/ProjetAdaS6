@@ -88,5 +88,20 @@ package body outils is
 
    end saisieString;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure saisieIdentite(identite : out T_identite) is
+
+   begin -- saisieIdentite
+      put_line("Prenom du client : ");
+      saisieString(identite.prenom);
+      new_line;
+
+      put_line("Nom du client : ");
+      saisieString(identite.nom);
+      new_line;
+
+
+   end saisieIdentite;
 
 end outils;

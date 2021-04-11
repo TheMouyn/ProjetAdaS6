@@ -14,6 +14,7 @@ package outils is
    procedure saisieBoolean(bool : out boolean);
    procedure afficherTexte(texte : in T_mot);
    procedure saisieString(texte : out T_mot);
+   procedure saisieIdentite(identite : out T_identite);
 
 
 
