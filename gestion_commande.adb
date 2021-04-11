@@ -1,4 +1,4 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, sequential_io, nt_console;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, sequential_io, nt_console, ada.unchecked_Deallocation;
 use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, nt_console;
 
 package body gestion_commande is
@@ -462,6 +462,27 @@ package body gestion_commande is
       close(varFichier_T_commande);
 
    end ajoutEnArchive;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure suprCommande(tete : in out T_PteurCommande; laCommande : in T_commande) is
+      Procedure Liberer is new ada.unchecked_Deallocation(T_cellCommande, T_PteurCommande);
+      celluleASupr : T_PteurCommande;
+
+   begin -- suprCommande
+      if tete /= null then
+         if tete.val = laCommande then
+            celluleASupr := tete;
+            tete := tete.suiv;
+            Liberer(celluleASupr);
+
+         else
+            suprCommande(tete.suiv, laCommande);
+
+         end if;
+      end if;
+   end suprCommande;
 
 
 
