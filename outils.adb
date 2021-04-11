@@ -43,7 +43,7 @@ package body outils is
 
    begin -- saisieBoolean
      loop
-       put("Oui / Non (O/N)=> ");
+       put("Oui / Non (O/N) => ");
        get(car); skip_line; new_line;
        case car is
          when 'O'|'o' => bool := TRUE; exit;
