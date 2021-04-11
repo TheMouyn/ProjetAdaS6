@@ -52,5 +52,6 @@ package gestion_commande is
    procedure affichierNomArticle(article : in T_nomArticle);
    function commandeEstVide(laCommande : in T_commande) return boolean;
    procedure visuCommandeEnAttentePrepa(tete : in T_PteurCommande);
+   procedure visuCommandeEnAttentePrepaClient(tete : in T_PteurCommande; leClient : in T_identite);
 
 end gestion_commande;
