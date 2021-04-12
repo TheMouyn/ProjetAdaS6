@@ -487,55 +487,55 @@ package body gestion_commande is
 
 -- ----------------------------------------------------------------------------------------------
 
-procedure visuCommandeEnAttentePaiement(tete : in T_PteurCommande) is
-   -- permet de visualiser une liste de commande dans l'ordre en affichant toutes les infos
-   car : character;
+   procedure visuCommandeEnAttentePaiement(tete : in T_PteurCommande) is
+      -- permet de visualiser une liste de commande dans l'ordre en affichant toutes les infos
+      car : character;
 
-begin -- visuCommandeEnAttentePaiement
-   if tete /= null then
-      put("Numero : ");
-      put(tete.val.nuCommande, 1);
-      new_line;
-      put("Identite : ");
-      afficherTexte(tete.val.identiteClient.nom);
-      put(" ");
-      afficherTexte(tete.val.identiteClient.prenom);
-      new_line;
-      put("Article : ");
-      new_line;
-      for i in tete.val.articleCommande'range loop
-         if tete.val.articleCommande(i).quantite >0 then
-            affichierNomArticle(i);
-            put(" : ");
-            put(tete.val.articleCommande(i).quantite, 1);
-            new_line;
+   begin -- visuCommandeEnAttentePaiement
+      if tete /= null then
+         put("Numero : ");
+         put(tete.val.nuCommande, 1);
+         new_line;
+         put("Identite : ");
+         afficherTexte(tete.val.identiteClient.nom);
+         put(" ");
+         afficherTexte(tete.val.identiteClient.prenom);
+         new_line;
+         put("Article : ");
+         new_line;
+         for i in tete.val.articleCommande'range loop
+            if tete.val.articleCommande(i).quantite >0 then
+               affichierNomArticle(i);
+               put(" : ");
+               put(tete.val.articleCommande(i).quantite, 1);
+               new_line;
+            end if;
+
+         end loop;
+
+         put("Preparateur : ");
+         afficherTexte(tete.val.preparateur);
+         new_line;
+
+         put("Prix : ");
+         afficherPrix(tete.val.montant);
+
+
+         new_line;
+         new_line;
+         if tete.suiv /= null then
+            put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
+            get_immediate(car);
+            if car /= 'q' AND car /= 'Q' then
+               clear_screen(black);
+               visuCommandeEnAttentePrepa(tete.suiv);
+
+            end if;
          end if;
 
-      end loop;
-
-      put("Preparateur : ");
-      afficherTexte(tete.val.preparateur);
-      new_line;
-
-      put("Prix : ");
-      afficherPrix(tete.val.montant);
-
-
-      new_line;
-      new_line;
-      if tete.suiv /= null then
-         put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
-         get_immediate(car);
-         if car /= 'q' AND car /= 'Q' then
-            clear_screen(black);
-            visuCommandeEnAttentePrepa(tete.suiv);
-
-         end if;
       end if;
 
-   end if;
-
-end visuCommandeEnAttentePaiement;
+   end visuCommandeEnAttentePaiement;
 
 
 
