@@ -538,6 +538,31 @@ package body gestion_commande is
    end visuCommandeEnAttentePaiement;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure afficherStock(stock : in T_table_article) is
+      -- permet d'afficher les quantites restantes et les prix
+
+   begin -- afficherStock
+      for i in stock'range loop
+         affichierNomArticle(i);
+         put(" : ");
+         new_line;
+
+         put("Quantite : ");
+         put(stock(i).quantite, 1);
+         new_line;
+
+         put("Prix : ");
+         afficherPrix(stock(i).prix);
+         new_line;
+
+         new_line;
+      end loop;
+
+   end afficherStock;
+
+
 
 
 

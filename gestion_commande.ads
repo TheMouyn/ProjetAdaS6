@@ -56,5 +56,6 @@ package gestion_commande is
    procedure ajoutEnArchive(laCommande : in T_commande);
    procedure suprCommande(tete : in out T_PteurCommande; laCommande : in T_commande);
    procedure visuCommandeEnAttentePaiement(tete : in T_PteurCommande);
+   procedure afficherStock(stock : in T_table_article);
 
 end gestion_commande;
