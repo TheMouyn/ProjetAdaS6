@@ -401,4 +401,68 @@ package body gestion_client is
    end annulerCommande;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure afficherFactureClient(racineArbre : in T_arbreClient) is
+      -- permet d'afficher les facture en attente de paiement d'un client specifique apres une saisie
+      procedure rechercheEtVisu(racine : in T_arbreClient; leClient : in T_identite) is
+         -- permet de chercher dans l'arbre le client et de lancer la visalisation
+
+      begin -- rechercheEtVisu
+         if racine /= null then
+            if leClient.nom < racine.val.identite.nom then
+               rechercheEtVisu(racine.fg, leClient);
+
+            elsif leClient.nom = racine.val.identite.nom then
+               -- recherche prenom
+               if leClient.prenom < racine.val.identite.prenom then
+                  rechercheEtVisu(racine.fg, leClient);
+
+               elsif leClient.prenom = racine.val.identite.prenom then
+                  -- on affiche les facture ou un msg d'erreur
+                  if racine.val.enAttentePaiement = null then
+                     put_line("Ce client n'a pas de facture en attente de paiement");
+                  else
+                     visuCommandeEnAttentePaiement(racine.val.enAttentePaiement);
+
+                  end if;
+
+               else
+                  rechercheEtVisu(racine.fd, leClient);
+               end if;
+            else
+               rechercheEtVisu(racine.fd, leClient);
+
+            end if;
+         end if;
+
+      end rechercheEtVisu;
+
+
+
+      leClient : T_identite;
+
+   begin -- afficherFactureClient
+      put_line("Saisir l'identite du client :");
+      saisieIdentite(leClient);
+      new_line;
+
+      if clientExiste(racineArbre, leClient) then
+         clear_screen(black);
+         rechercheEtVisu(racineArbre, leClient);
+
+
+
+      else
+         put_line("Le client n'existe pas dans le logiciel");
+
+      end if;
+
+
+
+
+   end afficherFactureClient;
+
+
+
 end gestion_client;
