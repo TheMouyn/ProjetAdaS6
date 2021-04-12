@@ -153,8 +153,6 @@ package body gestion_client is
       article(sortImmobilisation).quantite := 10;
       mettreDansLArbre(racine, (leNom, lePrenom), 9, article, lePreparateur, lePrix);
 
-
-
    end initCommandeEnAttenteDeReglement;
 
 -- ----------------------------------------------------------------------------------------------
@@ -304,9 +302,6 @@ package body gestion_client is
 
       end if;
 
-
-
-
    end nouvelleCommande;
 
 
@@ -402,11 +397,6 @@ package body gestion_client is
          put_line("Ce client n'existe pas dans le logiciel");
 
       end if;
-
-
-
-
-
 
    end annulerCommande;
 
