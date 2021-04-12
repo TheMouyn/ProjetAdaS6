@@ -612,6 +612,65 @@ package body gestion_commande is
    end afficherStock;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visuCommandeArchivee is
+      -- permet de visualiser les commandes archivees donc prix /= (0,0)
+      -- car les commandes annulee ont un prix a (0, 0)
+      maCommande : T_commande;
+      car : character;
+
+   begin -- visuCommandeArchivee
+      open(varFichier_T_commande, In_file, "FichierArchive");
+      while not End_of_file(varFichier_T_commande) loop
+         read(varFichier_T_commande, maCommande);
+
+         if maCommande.montant.ecu > 0 OR ELSE maCommande.montant.galion > 0 then
+            put("Numero : ");
+            put(maCommande.nuCommande, 1);
+            new_line;
+            put("Identite : ");
+            afficherTexte(maCommande.identiteClient.nom);
+            put(" ");
+            afficherTexte(maCommande.identiteClient.prenom);
+            new_line;
+            put("Article : ");
+            new_line;
+            for i in maCommande.articleCommande'range loop
+               if maCommande.articleCommande(i).quantite >0 then
+                  affichierNomArticle(i);
+                  put(" : ");
+                  put(maCommande.articleCommande(i).quantite, 1);
+                  new_line;
+               end if;
+
+            end loop;
+
+            put("Preparateur : ");
+            afficherTexte(maCommande.preparateur);
+            new_line;
+
+            put("Prix : ");
+            afficherPrix(maCommande.montant);
+
+            new_line;
+            new_line;
+
+            put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
+            get_immediate(car);
+            if car = 'q' OR car = 'Q' then
+               exit;
+
+            end if;
+            clear_screen(black);
+
+         end if;
+      end loop;
+
+      close(varFichier_T_commande);
+   end visuCommandeArchivee;
+
+
 
 
 
