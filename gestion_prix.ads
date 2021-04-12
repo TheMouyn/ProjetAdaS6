@@ -11,6 +11,7 @@ package gestion_prix is
 
    -- prototype procedure
    function sommePrix(prix1, prix2 : in T_prix) return T_prix;
+   procedure afficherPrix(prix : in T_prix);
 
 
 end gestion_prix;

@@ -15,4 +15,17 @@ package body gestion_prix is
 
    end sommePrix;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure afficherPrix(prix : in T_prix) is
+
+   begin -- afficherPrix
+      put(prix.ecu, 1);
+      put(" ecu(s) et ");
+      put(prix.galion, 1);
+      put(" galion(s)");
+
+
+   end afficherPrix;
+
 end gestion_prix;
