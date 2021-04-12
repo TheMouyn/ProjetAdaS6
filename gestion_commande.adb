@@ -512,7 +512,7 @@ package body gestion_commande is
             end if;
 
          end loop;
-         
+
          put("Preparateur : ");
          afficherTexte(tete.val.preparateur);
 
@@ -577,7 +577,7 @@ package body gestion_commande is
             get_immediate(car);
             if car /= 'q' AND car /= 'Q' then
                clear_screen(black);
-               visuCommandeEnAttentePrepa(tete.suiv);
+               visuCommandeEnAttentePaiement(tete.suiv);
 
             end if;
          end if;
