@@ -59,5 +59,6 @@ package gestion_commande is
    procedure visuCommandeEnAttentePaiement(tete : in T_PteurCommande);
    procedure afficherStock(stock : in T_table_article);
    procedure visuCommandeArchivee;
-   
+   procedure visuCommandeAnnulee;
+
 end gestion_commande;
