@@ -465,4 +465,29 @@ package body gestion_client is
 
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure affichageCommandeEnAttenteReglement(racine : in T_arbreClient) is
+      -- permet d'afficher les commandes en attente de reglement pour touts les clients
+
+   begin -- affichageCommandeEnAttenteReglement
+      if racine /= null then
+         affichageCommandeEnAttenteReglement(racine.fg);
+
+         if racine.val.enAttentePaiement /= null then
+            visuCommandeEnAttentePaiement(racine.val.enAttentePaiement);
+
+            put("Appuyer sur entrer");
+            skip_Line;
+            clear_screen(black);
+
+         end if;
+         affichageCommandeEnAttenteReglement(racine.fd);
+
+      end if;
+
+   end affichageCommandeEnAttenteReglement;
+
+
+
 end gestion_client;

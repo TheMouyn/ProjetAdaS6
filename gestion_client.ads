@@ -25,5 +25,6 @@ package gestion_client is
    procedure nouvelleCommande(fileCommandeEnAttente : in out T_fileCommande; racineClient : in out T_arbreClient; nuCommande : in out integer);
    procedure annulerCommande(file : in out T_fileCommande; racineArbre : in T_arbreClient);
    procedure afficherFactureClient(racineArbre : in T_arbreClient);
+   procedure affichageCommandeEnAttenteReglement(racine : in T_arbreClient);
 
 end gestion_client;
