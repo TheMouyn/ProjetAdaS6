@@ -73,4 +73,23 @@ package body gestion_personnel is
 
    end iniPersonnel;
 
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visuEmploye(tete : in T_PteurPersonnel) is
+      -- permet d'afficher la liste des employes du logiciel avec leur categorie dans l'ordre
+
+   begin -- visuEmploye
+      if tete /= null then
+         afficherTexte(tete.val.pseudo);
+         put(" ");
+         put(T_categorie'image(tete.val.categorie));
+         new_line;
+
+         visuEmploye(tete.suiv);
+
+      end if;
+
+   end visuEmploye;
+
 end gestion_personnel;

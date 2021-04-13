@@ -30,5 +30,6 @@ package gestion_personnel is
 
    -- prototype des procedures et fonctions
    procedure iniPersonnel(tete : in out T_PteurPersonnel);
+   procedure visuEmploye(tete : in T_PteurPersonnel);
 
 end gestion_personnel;
