@@ -11,6 +11,12 @@ package body gestion_prix is
       somme.ecu := prix1.ecu + prix2.ecu;
       somme.galion := prix1.galion + prix2.galion;
 
+      if somme.galion >= 15 then
+         somme.ecu := somme.ecu +1;
+         somme.galion := somme.galion - 15;
+
+      end if;
+
       return somme;
 
    end sommePrix;
