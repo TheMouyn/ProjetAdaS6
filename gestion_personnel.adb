@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
+use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
 
 
 package body gestion_personnel is
