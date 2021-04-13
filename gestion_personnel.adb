@@ -113,4 +113,31 @@ package body gestion_personnel is
 
    end employeExiste;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure nouveauMDP(personnel : in out T_personnel) is
+      -- permet de generer un mot de passe et de la traduire comme demande dans le CDC
+      leMDP : T_MDP;
+      newEmpreinte : integer := 0;
+
+   begin -- nouveauMDP
+      -- cette procedure est precede d'une demande de l'identite du personnel et une verification si il existe
+      put_line("Saisir le nouveau mot de passe (8 caracteres, dont 1 qui n'est pas une lettre)");
+      saisieMotDePasse(leMDP);
+
+      -- calcul de l'empreinte
+      for i in leMDP'range loop
+         newEmpreinte := character'pos(leMDP(i)) + newEmpreinte;
+      end loop;
+
+      newEmpreinte := newEmpreinte + personnel.nuMagique;
+      newEmpreinte := newEmpreinte mod 1454;
+
+      personnel.empreinte := newEmpreinte;
+
+   end nouveauMDP;
+
+
+
+
 end gestion_personnel;

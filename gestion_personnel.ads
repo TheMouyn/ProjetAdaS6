@@ -32,5 +32,6 @@ package gestion_personnel is
    procedure iniPersonnel(tete : in out T_PteurPersonnel);
    procedure visuEmploye(tete : in T_PteurPersonnel);
    function employeExiste(tete : in T_PteurPersonnel; lePseudo : in T_mot) return boolean;
-
+   procedure nouveauMDP(personnel : in out T_personnel);
+   
 end gestion_personnel;
