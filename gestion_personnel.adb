@@ -7,15 +7,15 @@ package body gestion_personnel is
    procedure iniPersonnel(tete : in out T_PteurPersonnel) is
       -- permet de faire de la liste personnel avec les donnees de test
 
-      procedure ajoutListe(tete : in out T_PteurPersonnel; pseudo : in T_mot; categorie : in T_categorie; nuMagique, emprinte : in integer) is
+      procedure ajoutListe(tete : in out T_PteurPersonnel; pseudo : in T_mot; categorie : in T_categorie; nuMagique, empreinte : in integer) is
          -- permet ajout en tete
 
       begin -- ajoutListe
          if tete = null then
-            tete := new T_cellPersonnel'((pseudo, categorie, nuMagique, emprinte, FALSE), null);
+            tete := new T_cellPersonnel'((pseudo, categorie, nuMagique, empreinte, FALSE), null);
 
          else
-            tete := new T_cellPersonnel'((pseudo, categorie, nuMagique, emprinte, FALSE), tete);
+            tete := new T_cellPersonnel'((pseudo, categorie, nuMagique, empreinte, FALSE), tete);
 
          end if;
 

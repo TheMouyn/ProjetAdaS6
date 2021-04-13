@@ -10,7 +10,7 @@ package gestion_personnel is
       pseudo : T_mot := (others =>' ');
       categorie : T_categorie;
       nuMagique : integer;
-      emprinte : integer;
+      empreinte : integer;
       mdpFaux : boolean; -- permet de savoir si le mot de passe est valide ou non
    end record;
 
