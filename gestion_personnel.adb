@@ -92,4 +92,25 @@ package body gestion_personnel is
 
    end visuEmploye;
 
+
+-- ----------------------------------------------------------------------------------------------
+
+   function employeExiste(tete : in T_PteurPersonnel; lePseudo : in T_mot) return boolean is
+      -- revois TRUE si le pseudo est deja pris
+
+   begin -- employeExiste
+      if tete /= null then
+         if tete.val.pseudo = lePseudo then
+            return TRUE;
+         else
+            return (FALSE OR employeExiste(tete.suiv, lePseudo));
+
+         end if;
+      else
+         return FALSE;
+
+      end if;
+
+   end employeExiste;
+
 end gestion_personnel;
