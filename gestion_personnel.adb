@@ -134,6 +134,7 @@ package body gestion_personnel is
       newEmpreinte := newEmpreinte mod 1454;
 
       personnel.empreinte := newEmpreinte;
+      personnel.mdpFaux := FALSE;
 
    end nouveauMDP;
 
