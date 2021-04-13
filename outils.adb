@@ -110,34 +110,43 @@ procedure saisieMotDePasse(mdp : out T_MDP) is
    -- permet la saisie d'un string de 8 caracteres avec verif de caracteres autres que lettre
   k : integer:=0;
   carSpe : boolean := false; -- est TRUE si le mdp contient des caracteres speciaux
+  leMDP : T_mot;
 
 begin -- saisieString
   loop
-    mdp := (others => 'z');
-    carSpe := false;
-    k := 0;
+      begin
+         leMDP := (others => 'z');
+         carSpe := false;
+         k := 0;
 
-    put("=> ");
-    get_line(mdp, k); new_line;
+         put("=> ");
+         get_line(leMDP, k); new_line;
 
-   for i in mdp'range loop
-      if (not(mdp(i) in 'a'..'z')) AND (not(mdp(i) in 'A'..'Z')) then
-         carSpe := TRUE;
-         exit;
-      end if;
-   end loop;
+         for i in leMDP'range loop
+            if (not(leMDP(i) in 'a'..'z')) AND (not(leMDP(i) in 'A'..'Z')) then
+               carSpe := TRUE;
+               exit;
+            end if;
+         end loop;
 
-   exit when (k = 8) AND (carSpe = true);
+         exit when (k = 8) AND (carSpe = true);
 
-   if k /= 8 then
-      put("Votre mot ne comporte pas 8 caracteres"); new_line;
-   end if;
+         if k /= 8 then
+            put("Votre mot ne comporte pas 8 caracteres"); new_line;
+         end if;
 
-   if carSpe = false then
-      put("Votre mot de passe ne comporte pas de caracteres qui ne sont pas des lettres"); new_line;
-   end if;
+         if carSpe = false then
+            put("Votre mot de passe ne comporte pas de caracteres qui ne sont pas des lettres"); new_line;
+         end if;
+
+         exception
+            when others => put_line("Faire une saisie de 8 caracteres uniquement");
+
+      end;
 
   end loop;
+
+  mdp := leMDP(1..8);
 
 end saisieMotDePasse;
 
