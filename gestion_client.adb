@@ -489,5 +489,26 @@ package body gestion_client is
    end affichageCommandeEnAttenteReglement;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visuClient(racine : in T_arbreClient) is
+      -- permet d'afficher la liste des clients en odre alphabetique
+
+   begin -- visuClient
+      if racine /= null then
+         visuClient(racine.fg);
+
+         afficherTexte(racine.val.identite.nom);
+         put(" ");
+         afficherTexte(racine.val.identite.prenom);
+         new_line;
+
+         visuClient(racine.fd);
+
+      end if;
+
+   end visuClient;
+
+
 
 end gestion_client;
