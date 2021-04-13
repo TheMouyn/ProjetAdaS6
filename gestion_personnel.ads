@@ -34,5 +34,6 @@ package gestion_personnel is
    function employeExiste(tete : in T_PteurPersonnel; lePseudo : in T_mot) return boolean;
    procedure nouveauMDP(personnel : in out T_personnel);
    procedure saisieCategorie(laCat : out T_categorie);
+   procedure nouvelleEmbauche(tete : in out T_PteurPersonnel);
 
 end gestion_personnel;

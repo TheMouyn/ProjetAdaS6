@@ -163,6 +163,53 @@ package body gestion_personnel is
    end saisieCategorie;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure nouvelleEmbauche(tete : in out T_PteurPersonnel) is
+      -- permet de faire saisir une nouvelle embauche a un grandMagicien
+
+      procedure ajoutEntete(tete : in out T_PteurPersonnel; lePersonnel : in T_personnel) is
+         -- permet d'ajouter en tete un nouveau T_personnel dans la liste
+
+      begin -- ajoutEntete
+         if tete = null then
+            tete := new T_cellPersonnel'(lePersonnel, null);
+
+         else
+            tete := new T_cellPersonnel'(lePersonnel, tete);
+         end if;
+
+      end ajoutEntete;
+
+
+      newEmploye : T_personnel;
+
+   begin -- nouvelleEmbauche
+      put_line("Saisir le pseudo du nouvel employe");
+      saisieString(newEmploye.pseudo);
+      new_line;
+
+      if employeExiste(tete, newEmploye.pseudo) then
+         put_line("Ce pseudo est deja utilise !");
+
+      else
+         put_line("Quel est la categorie de l'employe :");
+         saisieCategorie(newEmploye.categorie);
+         new_line;
+
+         -- permet de generer un numero magique aleatoire
+         initialise(1, 1250);
+         newEmploye.nuMagique := random;
+
+         nouveauMDP(newEmploye);
+
+         ajoutEntete(tete, newEmploye);
+
+      end if;
+
+   end nouvelleEmbauche;
+
+
 
 
 end gestion_personnel;
