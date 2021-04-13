@@ -137,6 +137,30 @@ package body gestion_personnel is
 
    end nouveauMDP;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure saisieCategorie(laCat : out T_categorie) is
+      -- permet de saisir une categorie d'employe
+      leChoix : integer;
+
+   begin -- saisieCategorie
+      put_line("1 - Nain");
+      put_line("2 - Elfe");
+      put_line("3 - Magicien");
+
+      new_line;
+      put_line("Votre choix ?");
+      saisieInteger(1, 3, leChoix);
+
+      case leChoix is
+         when 1 => laCat := nain;
+         when 2 => laCat := elfe;
+         when 3 => laCat := magicien;
+         when others => null;
+      end case;
+
+   end saisieCategorie;
+
 
 
 
