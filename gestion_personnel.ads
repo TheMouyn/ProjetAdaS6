@@ -22,9 +22,16 @@ package gestion_personnel is
       suiv : T_PteurPersonnel;
    end record;
 
-   -- file de personnel : permmet de gerer les demande de mdp pour Mandrake
-   type T_filePersonnel is record
-      tete, fin : T_PteurPersonnel;
+   -- file de pseudo : permmet de gerer les demande de mdp pour Mandrake
+   type T_cellPseudo;
+   type T_PteurPseudo is access T_cellPseudo;
+   type T_cellPseudo is record
+      val : T_mot := (others => ' ');
+      suiv : T_PteurPseudo;
+   end record;
+
+   type T_filePseudo is record
+      tete, fin : T_PteurPseudo;
    end record;
 
 
@@ -36,5 +43,6 @@ package gestion_personnel is
    procedure saisieCategorie(laCat : out T_categorie);
    procedure nouvelleEmbauche(tete : in out T_PteurPersonnel);
    procedure suppressionEmploye(tete : in out T_PteurPersonnel);
+   procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo);
 
 end gestion_personnel;

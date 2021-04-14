@@ -261,6 +261,63 @@ package body gestion_personnel is
    end suppressionEmploye;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo) is
+      -- TODO: A tester avec connexion et generation des nouveau mdp par le grand magicien
+      -- permet de modifier le record T_personnel et ajouter le pseudo dans la file
+
+      procedure enfilerPseudo(file: in out T_filePseudo; lePseudo : in T_mot) is
+         -- permet d'enfiler le pseudo a la fin de la file
+
+      begin -- enfilerPseudo
+         if file.tete = null then
+            file.tete := new T_cellPseudo'(lePseudo, null);
+            file.fin := file.tete;
+
+         else
+            file.fin.suiv := new T_cellPseudo'(lePseudo, null);
+            file.fin := file.fin.suiv;
+         end if;
+      end enfilerPseudo;
+
+      procedure rechercheChangement(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
+         -- permet de rechercher dans la liste et de changer le boolean mdpFaux
+
+      begin -- rechercheChangement
+         if tete /= null then
+            if tete.val.pseudo = lePseudo then
+               tete.val.mdpFaux := TRUE;
+
+            else
+               rechercheChangement(tete.suiv, lePseudo);
+
+            end if;
+         end if;
+
+      end rechercheChangement;
+
+      lePseudo : T_mot := (others => ' ');
+
+   begin -- MDPOublie
+      put_line("Saisir le pseudo de l'employe afin de reinitialiser le mot de passe");
+      saisieString(lePseudo);
+      new_line;
+
+      if employeExiste(tete, lePseudo) then
+         rechercheChangement(tete, lePseudo);
+         enfilerPseudo(file, lePseudo);
+         put_line("Un nouveau mot de passe vous sera attribue par Le Grand Magicien");
+         put_line("Cependant, pour l'heure votre compte est bloque");
+
+      else
+         put_line("Cet employe n'existe pas dans le logiciel");
+
+      end if;
+
+
+
+   end MDPOublie;
 
 
 end gestion_personnel;
