@@ -397,6 +397,9 @@ package body gestion_commande is
             end if;
          end if;
 
+      else
+         put_line("La liste des commandes en attente de preparation est vide");
+         
       end if;
 
    end visuCommandeEnAttentePrepa;
