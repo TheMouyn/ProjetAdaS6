@@ -148,15 +148,17 @@ package body gestion_personnel is
       put_line("1 - Nain");
       put_line("2 - Elfe");
       put_line("3 - Magicien");
+      put_line("4 - Grand Magicien");
 
       new_line;
       put_line("Votre choix ?");
-      saisieInteger(1, 3, leChoix);
+      saisieInteger(1, 4, leChoix);
 
       case leChoix is
          when 1 => laCat := nain;
          when 2 => laCat := elfe;
          when 3 => laCat := magicien;
+         when 4 => laCat := grandMagicien;
          when others => null;
       end case;
 
@@ -318,6 +320,136 @@ package body gestion_personnel is
 
 
    end MDPOublie;
+
+-- ----------------------------------------------------------------------------------------------
+
+   function recupereEmploye(tete : in T_PteurPersonnel; lePseudo : in T_mot) return T_personnel is
+      -- permet de recuperer un T_employe
+      vide : T_personnel;
+
+   begin -- recupereEmploye
+      vide.pseudo := (others => ' ');
+
+      if tete = null then
+         return vide;
+
+      else
+         if tete.val.pseudo = lePseudo then
+            return tete.val;
+
+         else
+            return (recupereEmploye(tete.suiv, lePseudo));
+         end if;
+      end if;
+
+   end recupereEmploye;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure bloquageCompte(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot) is
+      -- permet de bloquer un compte d'ajouter le pseudo dans la liste des mdp a generer
+      procedure enfilerPseudo(file : in out T_filePseudo; lePseudo : in T_mot) is
+         -- permet d'enfiler le pseudo dans la file des mots de passe oublies
+
+      begin -- enfilerPseudo
+         if file.tete = null then
+            file.tete := new T_cellPseudo'(lePseudo, null);
+            file.fin := file.tete;
+
+         else
+            file.fin.suiv := new T_cellPseudo'(lePseudo, null);
+            file.fin := file.fin.suiv;
+
+         end if;
+      end enfilerPseudo;
+
+   begin -- bloquageCompte
+      if tete /= null then
+         if tete.val.pseudo = lePseudo then
+            tete.val.mdpFaux := TRUE;
+            enfilerPseudo(fileMDPOublie, lePseudo);
+
+         else
+            bloquageCompte(tete.suiv, fileMDPOublie, lePseudo);
+
+         end if;
+
+      end if;
+
+   end bloquageCompte;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure seConnecter(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot) is
+      -- permet de se connecter et de modifier les variables de sessions
+      -- TODO: A TESTER
+
+      lePseudo : T_mot := (others => ' ');
+      laCat : T_categorie;
+      lePersonnel : T_personnel;
+      leMDP : T_MDP;
+      laEmpreinte : integer := 0;
+
+      compteur : integer := 0;
+
+
+   begin -- seConnecter
+      put_line("Veuillez saisir la categorie d'utilisateur");
+      saisieCategorie(laCat);
+      new_line;
+
+      put_line("Veuillez saisir votre pseudo");
+      saisieString(lePseudo);
+      new_line;
+
+      if employeExiste(tete, lePseudo) then
+         -- si le pseudo existe
+         lePersonnel := recupereEmploye(tete, lePseudo);
+         if lePersonnel.categorie = laCat then
+            loop -- compte le nombre de fois mdp faux
+               put_line("Veuillez saisir votre mot de passe");
+               saisieMotDePasse(leMDP);
+
+               -- calcul de l'empreinte
+               for i in leMDP'range loop
+                  laEmpreinte := character'pos(leMDP(i)) + laEmpreinte;
+               end loop;
+
+               laEmpreinte := laEmpreinte + lePersonnel.nuMagique;
+               laEmpreinte := laEmpreinte mod 1454;
+
+               if lePersonnel.empreinte = laEmpreinte then
+                  -- si le mot de passe est bon
+                  put_line("Mot de passe bon");
+                  catConnectee := lePersonnel.categorie;
+                  pseudoConnecte := lePersonnel.pseudo;
+                  userConnecte := TRUE;
+                  exit;
+
+               else
+                  put_line("Mot de passe faux !");
+                  new_line;
+                  compteur := compteur +1;
+               end if;
+
+               if laCat /= grandMagicien AND THEN compteur >= 3 then
+                  put_line("Vous fait 3 tentatives, votre compte est desactive, un nouveau mot de passe vous sera attribue");
+                  bloquageCompte(tete, fileMDPOublie, lePseudo);
+                  exit;
+
+               end if;
+            end loop;
+         else
+            put_line("La categorie et le pseudo ne sont pas des informations coherantes au vue ce que qui a ete enregistre dans le logiciel");
+
+         end if;
+      else
+         put_line("Ce pseudo n'est pas enregistre dans le logiciel");
+
+      end if;
+   end seConnecter;
 
 
 end gestion_personnel;
