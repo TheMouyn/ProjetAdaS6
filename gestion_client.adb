@@ -379,7 +379,7 @@ package body gestion_client is
 
             if confirmationSupr then
                ajoutEnArchive(laCommande);
-               suprCommande(file.tete, laCommande);
+               suprCommande(file, laCommande);
                put_line("La commande a bien ete supprimee");
 
             else

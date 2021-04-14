@@ -466,22 +466,57 @@ package body gestion_commande is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure suprCommande(tete : in out T_PteurCommande; laCommande : in T_commande) is
+   procedure suprCommande(file : in out T_fileCommande; laCommande : in T_commande) is
+      -- permet de supprimer la commande de la file et de redefinir le file.fin
       Procedure Liberer is new ada.unchecked_Deallocation(T_cellCommande, T_PteurCommande);
-      celluleASupr : T_PteurCommande;
+
+      procedure suppression(tete : in out T_PteurCommande; laCommande : in T_commande) is
+         -- permet de supprimer la cellule de la commande
+         celluleASupr : T_PteurCommande;
+
+      begin -- suppression
+         if tete /= null then
+            if tete.val = laCommande then
+               celluleASupr := tete;
+               tete := tete.suiv;
+               -- Liberer(celluleASupr);
+
+            else
+               suppression(tete.suiv, laCommande);
+
+            end if;
+         end if;
+      end suppression;
+
+      procedure redefinirFin(file : in out T_fileCommande) is
+         -- permet de redefinir le pointeur de fin dans la file
+         lectureTete : T_PteurCommande := file.tete;
+
+      begin -- redefinirFin
+         while lectureTete /= null loop
+            if lectureTete.suiv = null then
+               file.fin := lectureTete;
+               exit;
+            else
+               lectureTete := lectureTete.suiv;
+            end if;
+         end loop;
+
+      end redefinirFin;
+
+
 
    begin -- suprCommande
-      if tete /= null then
-         if tete.val = laCommande then
-            celluleASupr := tete;
-            tete := tete.suiv;
-            Liberer(celluleASupr);
+      suppression(file.tete, laCommande);
 
-         else
-            suprCommande(tete.suiv, laCommande);
+      if file.tete = null then
+         file.fin := null;
 
-         end if;
+      else
+         redefinirFin(file);
       end if;
+
+
    end suprCommande;
 
 
