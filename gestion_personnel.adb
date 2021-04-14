@@ -1,4 +1,4 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
+with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire, ada.unchecked_Deallocation;
 use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
 
 
@@ -208,6 +208,57 @@ package body gestion_personnel is
       end if;
 
    end nouvelleEmbauche;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure suppressionEmploye(tete : in out T_PteurPersonnel) is
+      -- permet de supprimer un employe
+
+      procedure rechercheDel(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
+         -- permet de rechercher dans la liste le pseudo et de supprimer l'employe
+
+         Procedure Liberer is new ada.unchecked_Deallocation(T_cellPersonnel, T_PteurPersonnel);
+         cellASupr : T_PteurPersonnel := null;
+
+      begin -- rechercheDel
+         if tete /= null then
+            if tete.val.pseudo = lePseudo then
+               cellASupr := tete;
+               tete := tete.suiv;
+               Liberer(cellASupr);
+
+            else
+               rechercheDel(tete.suiv, lePseudo);
+            end if;
+         end if;
+      end rechercheDel;
+
+
+      lePseudo : T_mot := (others => ' ');
+
+   begin -- suppressionEmploye
+      if tete = null then
+         put_line("La liste des employe est vide !");
+      else
+         put_line("Saisir le pseudo de l'employe a supprimer");
+         saisieString(lePseudo);
+
+         if employeExiste(tete, lePseudo) then
+            rechercheDel(tete, lePseudo);
+            new_line;
+
+            afficherTexte(lePseudo);
+            put(" a ete supprime");
+            new_line;
+
+         else
+            put_line("Ce personnel n'existe pas dans le logiciel");
+
+         end if;
+
+      end if;
+   end suppressionEmploye;
 
 
 

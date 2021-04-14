@@ -35,5 +35,6 @@ package gestion_personnel is
    procedure nouveauMDP(personnel : in out T_personnel);
    procedure saisieCategorie(laCat : out T_categorie);
    procedure nouvelleEmbauche(tete : in out T_PteurPersonnel);
+   procedure suppressionEmploye(tete : in out T_PteurPersonnel);
 
 end gestion_personnel;
