@@ -304,6 +304,25 @@ package body gestion_client is
 
    end nouvelleCommande;
 
+-- ----------------------------------------------------------------------------------------------
+
+   function commandeExisteClient(tete : in T_PteurCommande; laIdentite : in T_identite) return boolean is
+      -- permet de savoir si une commande est en attente de preparation pour ce client
+
+   begin -- commandeExisteClient
+      if tete = null then
+         return false;
+
+      else
+         if tete.val.identiteClient = laIdentite then
+            return TRUE;
+         else
+            return (false or commandeExisteClient(tete.suiv, laIdentite));
+         end if;
+      end if;
+
+   end commandeExisteClient;
+
 
 -- ----------------------------------------------------------------------------------------------
 
@@ -326,70 +345,77 @@ package body gestion_client is
       clear_screen(black);
 
       if clientExiste(racineArbre, leClient) then
-         put_line("Voici les commandes en attente pour ce client");
-         visuCommandeEnAttentePrepaClient(file.tete, leClient);
+         if commandeExisteClient(file.tete, leClient) then
+            put_line("Voici les commandes en attente pour ce client");
+            visuCommandeEnAttentePrepaClient(file.tete, leClient);
 
-         clear_screen(black);
-         put_line("Quel est le numero de commande que vous desirez annuler ? (0 pour annuler)");
-         saisieInteger(0, integer'last, leNuCommande);
-         new_line;
-
-         -- permet de parcourir la liste des commandes et de recuperer la commande en question
-         while lecture /= null loop
-            if lecture.val.nuCommande = leNuCommande AND lecture.val.identiteClient = leClient then
-               laCommande := lecture.val;
-               commandeTrouve := TRUE;
-               exit;
-
-            else
-               lecture := lecture.suiv;
-            end if;
-
-         end loop;
-
-
-         if commandeTrouve then
-            -- confirmation
-            put_line("Voulez-vous supprimer la commande :");
+            clear_screen(black);
+            put_line("Quel est le numero de commande que vous desirez annuler ? (0 pour annuler)");
+            saisieInteger(0, integer'last, leNuCommande);
             new_line;
 
-            put("Numero : ");
-            put(laCommande.nuCommande, 1);
-            new_line;
-            put("Identite : ");
-            afficherTexte(laCommande.identiteClient.nom);
-            put(" ");
-            afficherTexte(laCommande.identiteClient.prenom);
-            new_line;
-            put("Article : ");
-            new_line;
-            for i in laCommande.articleCommande'range loop
-               if laCommande.articleCommande(i).quantite >0 then
-                  affichierNomArticle(i);
-                  put(" : ");
-                  put(laCommande.articleCommande(i).quantite, 1);
-                  new_line;
+            -- permet de parcourir la liste des commandes et de recuperer la commande en question
+            while lecture /= null loop
+               if lecture.val.nuCommande = leNuCommande AND lecture.val.identiteClient = leClient then
+                  laCommande := lecture.val;
+                  commandeTrouve := TRUE;
+                  exit;
+
+               else
+                  lecture := lecture.suiv;
                end if;
 
             end loop;
 
-            new_line;
-            put_line("Vous confirmer ?");
-            saisieBoolean(confirmationSupr);
 
-            if confirmationSupr then
-               ajoutEnArchive(laCommande);
-               suprCommande(file, laCommande);
-               put_line("La commande a bien ete supprimee");
+            if commandeTrouve then
+               -- confirmation
+               put_line("Voulez-vous supprimer la commande :");
+               new_line;
+
+               put("Numero : ");
+               put(laCommande.nuCommande, 1);
+               new_line;
+               put("Identite : ");
+               afficherTexte(laCommande.identiteClient.nom);
+               put(" ");
+               afficherTexte(laCommande.identiteClient.prenom);
+               new_line;
+               put("Article : ");
+               new_line;
+               for i in laCommande.articleCommande'range loop
+                  if laCommande.articleCommande(i).quantite >0 then
+                     affichierNomArticle(i);
+                     put(" : ");
+                     put(laCommande.articleCommande(i).quantite, 1);
+                     new_line;
+                  end if;
+
+               end loop;
+
+               new_line;
+               put_line("Vous confirmer ?");
+               saisieBoolean(confirmationSupr);
+
+               if confirmationSupr then
+                  ajoutEnArchive(laCommande);
+                  suprCommande(file, laCommande);
+                  put_line("La commande a bien ete supprimee");
+
+               else
+                  put_line("La commande n'a pas ete supprimee");
+
+               end if;
 
             else
-               put_line("La commande n'a pas ete supprimee");
+               -- si la commande n'est pas trouve
+               put_line("Il n'y a pas de commande qui correspond aux criteres");
 
             end if;
 
+
          else
-            -- si la commande n'est pas trouve
-            put_line("Il n'y a pas de commande qui correspond aux criteres");
+            put_line("Il n'y a aucune commande en attente de preparation pour ce client");
 
          end if;
 
