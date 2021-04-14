@@ -150,4 +150,19 @@ begin -- saisieString
 
 end saisieMotDePasse;
 
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure suivant is
+      -- permet de taper entrer puis efface l'ecran
+
+   begin -- suivant
+      New_Line; New_Line;
+      put("Appuyez sur entrer pour continuer");
+      Skip_Line;
+      clear_screen(black);
+
+   end suivant;
+
+
 end outils;

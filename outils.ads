@@ -17,6 +17,7 @@ package outils is
    procedure saisieString(texte : out T_mot);
    procedure saisieIdentite(identite : out T_identite);
    procedure saisieMotDePasse(mdp : out T_MDP);
+   procedure suivant;
 
 
 
