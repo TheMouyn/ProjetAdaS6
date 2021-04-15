@@ -813,6 +813,35 @@ package body gestion_commande is
       close(varFichier_T_commande);
    end visuArchiveUtilisateur;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure reapprovisionnementStock(stock : in out T_table_article) is
+      -- permet de rajouter des articles dans le stock
+      ajout : T_table_article;
+
+   begin -- reapprovisionnementStock
+      put_line("Saisir le nombre d'elements a ajouter au stock :");
+      new_line;
+
+      for i in stock'range loop
+         affichierNomArticle(i);
+         put(" ");
+         saisieInteger(0, integer'last-stock(i).quantite, ajout(i).quantite);
+      end loop;
+
+      for i in stock'range loop
+         stock(i).quantite := stock(i).quantite + ajout(i).quantite;
+      end loop;
+
+      new_line;
+      new_line;
+      clear_screen(black);
+      put_line("Voila le stock acctuel :");
+      afficherStock(stock);
+
+
+   end reapprovisionnementStock;
+
 
 
 
