@@ -62,5 +62,6 @@ package gestion_commande is
    procedure visuCommandeAnnulee;
    procedure visuArchiveUtilisateur(userConnecte : in T_mot);
    procedure reapprovisionnementStock(stock : in out T_table_article);
+   procedure visualisationBesoin(tabBesoin : in T_table_article);
 
 end gestion_commande;

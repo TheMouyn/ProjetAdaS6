@@ -843,6 +843,23 @@ package body gestion_commande is
    end reapprovisionnementStock;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visualisationBesoin(tabBesoin : in T_table_article) is
+      -- permet de visualiser le tableau des besoin
+
+   begin -- visualisationBesoin
+      put_line("Tableau des besoin avec les quantites necessaire : ");
+      for i in tabBesoin'range loop
+         affichierNomArticle(i);
+         put(" => ");
+         put(tabBesoin(i).quantite, 1);
+         new_line;
+
+      end loop;
+   end visualisationBesoin;
+
+
 
 
 
