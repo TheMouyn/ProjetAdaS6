@@ -451,5 +451,16 @@ package body gestion_personnel is
       end if;
    end seConnecter;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure seDeconnecter(userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot) is
+
+   begin -- seDeconnecter
+      userConnecte := FALSE;
+      catConnectee := nain;
+      pseudoConnecte := (others => ' ');
+
+   end seDeconnecter;
+
 
 end gestion_personnel;

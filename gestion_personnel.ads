@@ -47,5 +47,6 @@ package gestion_personnel is
    function recupereEmploye(tete : in T_PteurPersonnel; lePseudo : in T_mot) return T_personnel;
    procedure bloquageCompte(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot);
    procedure seConnecter(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot);
-      
+   procedure seDeconnecter(userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot);
+
 end gestion_personnel;
