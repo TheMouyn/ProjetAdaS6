@@ -536,5 +536,91 @@ package body gestion_client is
    end visuClient;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; userConnecte : in T_mot) is
+      -- permet d'afficher les commandes (en attente facturation, en attente reglement, ou archivees) d'un utilisateur specifique
+
+      procedure affichageEnAttenteFacturation(tete : in T_PteurCommande; userConnecte : in T_mot) is
+         -- permet d'afficher les commandes en attente de facturation d'un preparateur specifique
+         car : character;
+
+      begin -- affichageEnAttenteFacturation
+         if tete /= null then
+            if tete.val.preparateur = userConnecte then
+               put("Numero : ");
+               put(tete.val.nuCommande, 1);
+               new_line;
+               put("Identite : ");
+               afficherTexte(tete.val.identiteClient.nom);
+               put(" ");
+               afficherTexte(tete.val.identiteClient.prenom);
+               new_line;
+               put("Article : ");
+               new_line;
+               for i in tete.val.articleCommande'range loop
+                  if tete.val.articleCommande(i).quantite >0 then
+                     affichierNomArticle(i);
+                     put(" : ");
+                     put(tete.val.articleCommande(i).quantite, 1);
+                     new_line;
+                  end if;
+               end loop;
+               put("Preparateur : ");
+               afficherTexte(tete.val.preparateur);
+
+               new_line;
+               new_line;
+               put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
+               get_immediate(car);
+               if car /= 'q' AND car /= 'Q' then
+                  clear_screen(black);
+                  -- problème appel récurif
+                  affichageEnAttenteFacturation(tete.suiv, userConnecte);
+
+               end if;
+            else
+               affichageEnAttenteFacturation(tete.suiv, userConnecte);
+
+            end if;
+
+         end if;
+      end affichageEnAttenteFacturation;
+
+      procedure affichageEnAttenteReglement(racine : in T_arbreClient; userConnecte : in T_mot) is
+         -- permet d'afficher les commandes en attente de reglement d'un preparateur specifique
+
+      begin -- affichageEnAttenteReglement
+         if racine /= null then
+            affichageEnAttenteReglement(racine.fg, userConnecte);
+
+            if racine.val.enAttentePaiement /= null then
+               affichageEnAttenteFacturation(racine.val.enAttentePaiement, userConnecte);
+            end if;
+
+            affichageEnAttenteReglement(racine.fd, userConnecte);
+
+         end if;
+      end affichageEnAttenteReglement;
+
+
+   begin -- visuCommandeUtilisateur
+      put("Voici les commandes prepare par ");
+      afficherTexte(userConnecte);
+      new_line;
+
+      affichageEnAttenteFacturation(teteFacture, userConnecte);
+      clear_screen(black);
+
+      affichageEnAttenteReglement(racine, userConnecte);
+      clear_screen(black);
+
+      visuArchiveUtilisateur(userConnecte);
+
+
+
+   end visuCommandeUtilisateur;
+
+
 
 end gestion_client;
