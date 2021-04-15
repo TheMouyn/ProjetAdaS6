@@ -60,5 +60,6 @@ package gestion_commande is
    procedure afficherStock(stock : in T_table_article);
    procedure visuCommandeArchivee;
    procedure visuCommandeAnnulee;
+   procedure visuArchiveUtilisateur(userConnecte : in T_mot);
 
 end gestion_commande;

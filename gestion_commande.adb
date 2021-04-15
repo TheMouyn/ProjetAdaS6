@@ -399,7 +399,7 @@ package body gestion_commande is
 
       else
          put_line("La liste des commandes en attente de preparation est vide");
-         
+
       end if;
 
    end visuCommandeEnAttentePrepa;
@@ -759,6 +759,60 @@ package body gestion_commande is
 
       close(varFichier_T_commande);
    end visuCommandeAnnulee;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure visuArchiveUtilisateur(userConnecte : in T_mot) is
+      -- permet de visualiser les commandes archivees (et non annulees) qui ont etee traite par un utilisateur specifique
+      maCommande : T_commande;
+      car : character;
+
+   begin -- visuArchiveUtilisateur
+      open(varFichier_T_commande, In_file, "FichierArchive");
+      while not End_of_file(varFichier_T_commande) loop
+         read(varFichier_T_commande, maCommande);
+
+         if (maCommande.montant.ecu > 0 OR ELSE maCommande.montant.galion > 0) AND THEN maCommande.preparateur = userConnecte then
+            put("Numero : ");
+            put(maCommande.nuCommande, 1);
+            new_line;
+            put("Identite : ");
+            afficherTexte(maCommande.identiteClient.nom);
+            put(" ");
+            afficherTexte(maCommande.identiteClient.prenom);
+            new_line;
+            put("Article : ");
+            new_line;
+            for i in maCommande.articleCommande'range loop
+               if maCommande.articleCommande(i).quantite >0 then
+                  affichierNomArticle(i);
+                  put(" : ");
+                  put(maCommande.articleCommande(i).quantite, 1);
+                  new_line;
+               end if;
+            end loop;
+
+            put("Preparateur : ");
+            afficherTexte(maCommande.preparateur);
+            new_line;
+
+            new_line;
+            new_line;
+            put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
+            get_immediate(car);
+            if car = 'q' OR car = 'Q' then
+               exit;
+
+            end if;
+            clear_screen(black);
+
+         end if;
+      end loop;
+
+      close(varFichier_T_commande);
+   end visuArchiveUtilisateur;
+
 
 
 
