@@ -388,28 +388,11 @@ package body gestion_commande is
 
    begin -- visuCommandeEnAttentePrepa
       if tete /= null then
-         put("Numero : ");
-         put(tete.val.nuCommande, 1);
-         new_line;
-         put("Identite : ");
-         afficherTexte(tete.val.identiteClient.nom);
-         put(" ");
-         afficherTexte(tete.val.identiteClient.prenom);
-         new_line;
-         put("Article : ");
-         new_line;
-         for i in tete.val.articleCommande'range loop
-            if tete.val.articleCommande(i).quantite >0 then
-               affichierNomArticle(i);
-               put(" : ");
-               put(tete.val.articleCommande(i).quantite, 1);
-               new_line;
-            end if;
 
-         end loop;
+         afficherUneCommande(tete.val);
 
          new_line;
-         new_line;
+
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
@@ -438,28 +421,11 @@ package body gestion_commande is
    begin -- visuCommandeEnAttentePrepaClient
       if tete /= null then
          if tete.val.identiteClient.prenom = leClient.prenom AND tete.val.identiteClient.nom = leClient.nom then
-            put("Numero : ");
-            put(tete.val.nuCommande, 1);
-            new_line;
-            put("Identite : ");
-            afficherTexte(tete.val.identiteClient.nom);
-            put(" ");
-            afficherTexte(tete.val.identiteClient.prenom);
-            new_line;
-            put("Article : ");
-            new_line;
-            for i in tete.val.articleCommande'range loop
-               if tete.val.articleCommande(i).quantite >0 then
-                  affichierNomArticle(i);
-                  put(" : ");
-                  put(tete.val.articleCommande(i).quantite, 1);
-                  new_line;
-               end if;
 
-            end loop;
+            afficherUneCommande(tete.val);
 
             new_line;
-            new_line;
+
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
             if car /= 'q' AND car /= 'Q' then
@@ -554,31 +520,11 @@ package body gestion_commande is
 
    begin -- visuCommandeEnAttenteFacturation
       if tete /= null then
-         put("Numero : ");
-         put(tete.val.nuCommande, 1);
-         new_line;
-         put("Identite : ");
-         afficherTexte(tete.val.identiteClient.nom);
-         put(" ");
-         afficherTexte(tete.val.identiteClient.prenom);
-         new_line;
-         put("Article : ");
-         new_line;
-         for i in tete.val.articleCommande'range loop
-            if tete.val.articleCommande(i).quantite >0 then
-               affichierNomArticle(i);
-               put(" : ");
-               put(tete.val.articleCommande(i).quantite, 1);
-               new_line;
-            end if;
 
-         end loop;
-
-         put("Preparateur : ");
-         afficherTexte(tete.val.preparateur);
+         afficherUneCommande(tete.val);
 
          new_line;
-         new_line;
+
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
@@ -603,36 +549,12 @@ package body gestion_commande is
 
    begin -- visuCommandeEnAttentePaiement
       if tete /= null then
-         put("Numero : ");
-         put(tete.val.nuCommande, 1);
-         new_line;
-         put("Identite : ");
-         afficherTexte(tete.val.identiteClient.nom);
-         put(" ");
-         afficherTexte(tete.val.identiteClient.prenom);
-         new_line;
-         put("Article : ");
-         new_line;
-         for i in tete.val.articleCommande'range loop
-            if tete.val.articleCommande(i).quantite >0 then
-               affichierNomArticle(i);
-               put(" : ");
-               put(tete.val.articleCommande(i).quantite, 1);
-               new_line;
-            end if;
 
-         end loop;
-
-         put("Preparateur : ");
-         afficherTexte(tete.val.preparateur);
-         new_line;
-
-         put("Prix : ");
-         afficherPrix(tete.val.montant);
-
+         afficherUneCommande(tete.val);
 
          new_line;
          new_line;
+
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
@@ -687,34 +609,10 @@ package body gestion_commande is
          read(varFichier_T_commande, maCommande);
 
          if maCommande.montant.ecu > 0 OR ELSE maCommande.montant.galion > 0 then
-            put("Numero : ");
-            put(maCommande.nuCommande, 1);
-            new_line;
-            put("Identite : ");
-            afficherTexte(maCommande.identiteClient.nom);
-            put(" ");
-            afficherTexte(maCommande.identiteClient.prenom);
-            new_line;
-            put("Article : ");
-            new_line;
-            for i in maCommande.articleCommande'range loop
-               if maCommande.articleCommande(i).quantite >0 then
-                  affichierNomArticle(i);
-                  put(" : ");
-                  put(maCommande.articleCommande(i).quantite, 1);
-                  new_line;
-               end if;
 
-            end loop;
 
-            put("Preparateur : ");
-            afficherTexte(maCommande.preparateur);
-            new_line;
+            afficherUneCommande(maCommande);
 
-            put("Prix : ");
-            afficherPrix(maCommande.montant);
-
-            new_line;
             new_line;
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
@@ -746,27 +644,10 @@ package body gestion_commande is
          read(varFichier_T_commande, maCommande);
 
          if maCommande.montant.ecu = 0 AND THEN maCommande.montant.galion = 0 then
-            put("Numero : ");
-            put(maCommande.nuCommande, 1);
-            new_line;
-            put("Identite : ");
-            afficherTexte(maCommande.identiteClient.nom);
-            put(" ");
-            afficherTexte(maCommande.identiteClient.prenom);
-            new_line;
-            put("Article : ");
-            new_line;
-            for i in maCommande.articleCommande'range loop
-               if maCommande.articleCommande(i).quantite >0 then
-                  affichierNomArticle(i);
-                  put(" : ");
-                  put(maCommande.articleCommande(i).quantite, 1);
-                  new_line;
-               end if;
 
-            end loop;
 
-            new_line;
+            afficherUneCommande(maCommande);
+
             new_line;
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
@@ -797,31 +678,12 @@ package body gestion_commande is
          read(varFichier_T_commande, maCommande);
 
          if (maCommande.montant.ecu > 0 OR ELSE maCommande.montant.galion > 0) AND THEN maCommande.preparateur = userConnecte then
-            put("Numero : ");
-            put(maCommande.nuCommande, 1);
-            new_line;
-            put("Identite : ");
-            afficherTexte(maCommande.identiteClient.nom);
-            put(" ");
-            afficherTexte(maCommande.identiteClient.prenom);
-            new_line;
-            put("Article : ");
-            new_line;
-            for i in maCommande.articleCommande'range loop
-               if maCommande.articleCommande(i).quantite >0 then
-                  affichierNomArticle(i);
-                  put(" : ");
-                  put(maCommande.articleCommande(i).quantite, 1);
-                  new_line;
-               end if;
-            end loop;
 
-            put("Preparateur : ");
-            afficherTexte(maCommande.preparateur);
-            new_line;
+
+            afficherUneCommande(maCommande);
 
             new_line;
-            new_line;
+
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
             if car = 'q' OR car = 'Q' then

@@ -538,67 +538,50 @@ package body gestion_client is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; userConnecte : in T_mot) is
+   procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; pseudoConnecte : in T_mot) is
       -- permet d'afficher les commandes (en attente facturation, en attente reglement, ou archivees) d'un utilisateur specifique
 
-      procedure affichageEnAttenteFacturation(tete : in T_PteurCommande; userConnecte : in T_mot) is
+      procedure affichageEnAttenteFacturation(tete : in T_PteurCommande; pseudoConnecte : in T_mot) is
          -- permet d'afficher les commandes en attente de facturation d'un preparateur specifique
          car : character;
 
       begin -- affichageEnAttenteFacturation
          if tete /= null then
-            if tete.val.preparateur = userConnecte then
-               put("Numero : ");
-               put(tete.val.nuCommande, 1);
-               new_line;
-               put("Identite : ");
-               afficherTexte(tete.val.identiteClient.nom);
-               put(" ");
-               afficherTexte(tete.val.identiteClient.prenom);
-               new_line;
-               put("Article : ");
-               new_line;
-               for i in tete.val.articleCommande'range loop
-                  if tete.val.articleCommande(i).quantite >0 then
-                     affichierNomArticle(i);
-                     put(" : ");
-                     put(tete.val.articleCommande(i).quantite, 1);
-                     new_line;
-                  end if;
-               end loop;
-               put("Preparateur : ");
-               afficherTexte(tete.val.preparateur);
+            if tete.val.preparateur = pseudoConnecte then
+
+               afficherUneCommande(tete.val);
 
                new_line;
                new_line;
+
                put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
                get_immediate(car);
                if car /= 'q' AND car /= 'Q' then
                   clear_screen(black);
                   -- problème appel récurif
-                  affichageEnAttenteFacturation(tete.suiv, userConnecte);
+                  affichageEnAttenteFacturation(tete.suiv, pseudoConnecte);
 
                end if;
             else
-               affichageEnAttenteFacturation(tete.suiv, userConnecte);
+               affichageEnAttenteFacturation(tete.suiv, pseudoConnecte);
 
             end if;
 
          end if;
       end affichageEnAttenteFacturation;
 
-      procedure affichageEnAttenteReglement(racine : in T_arbreClient; userConnecte : in T_mot) is
+      procedure affichageEnAttenteReglement(racine : in T_arbreClient; pseudoConnecte : in T_mot) is
          -- permet d'afficher les commandes en attente de reglement d'un preparateur specifique
 
       begin -- affichageEnAttenteReglement
          if racine /= null then
-            affichageEnAttenteReglement(racine.fg, userConnecte);
+            affichageEnAttenteReglement(racine.fg, pseudoConnecte);
 
             if racine.val.enAttentePaiement /= null then
-               affichageEnAttenteFacturation(racine.val.enAttentePaiement, userConnecte);
+               affichageEnAttenteFacturation(racine.val.enAttentePaiement, pseudoConnecte);
             end if;
 
-            affichageEnAttenteReglement(racine.fd, userConnecte);
+            affichageEnAttenteReglement(racine.fd, pseudoConnecte);
 
          end if;
       end affichageEnAttenteReglement;
@@ -606,16 +589,16 @@ package body gestion_client is
 
    begin -- visuCommandeUtilisateur
       put("Voici les commandes prepare par ");
-      afficherTexte(userConnecte);
+      afficherTexte(pseudoConnecte);
       new_line;
 
-      affichageEnAttenteFacturation(teteFacture, userConnecte);
+      affichageEnAttenteFacturation(teteFacture, pseudoConnecte);
       clear_screen(black);
 
-      affichageEnAttenteReglement(racine, userConnecte);
+      affichageEnAttenteReglement(racine, pseudoConnecte);
       clear_screen(black);
 
-      visuArchiveUtilisateur(userConnecte);
+      visuArchiveUtilisateur(pseudoConnecte);
 
 
 
