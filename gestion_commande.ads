@@ -49,6 +49,7 @@ package gestion_commande is
    procedure initCommandeEnAttenteDeFacturation(fileCommandeEnAttente : in out T_fileCommande);
    procedure initCommandeAnnulee;
    procedure enfilerCommande(file : in out T_fileCommande; maCommande : in T_commande);
+   procedure defilerCommande(file : in out T_fileCommande);
    procedure affichierNomArticle(article : in T_nomArticle);
    function commandeEstVide(laCommande : in T_commande) return boolean;
    procedure visuCommandeEnAttentePrepa(tete : in T_PteurCommande);
@@ -63,5 +64,6 @@ package gestion_commande is
    procedure visuArchiveUtilisateur(userConnecte : in T_mot);
    procedure reapprovisionnementStock(stock : in out T_table_article);
    procedure visualisationBesoin(tabBesoin : in T_table_article);
+   procedure afficherUneCommande(laCommande : in T_commande);
 
 end gestion_commande;

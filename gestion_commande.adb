@@ -315,6 +315,29 @@ package body gestion_commande is
 
 -- ----------------------------------------------------------------------------------------------
 
+   procedure defilerCommande(file : in out T_fileCommande) is
+      -- permet de defiler une commande sans recuperation
+      Procedure Liberer is new ada.unchecked_Deallocation(T_cellCommande, T_PteurCommande);
+
+      LaCellule : T_PteurCommande;
+
+   begin -- defilerCommande
+      if file.tete /= null then
+         LaCellule := file.tete;
+         file.tete := file.tete.suiv;
+         Liberer(LaCellule);
+
+         if file.tete = null then
+            file.fin := null;
+         end if;
+
+      end if;
+
+   end defilerCommande;
+
+
+-- ----------------------------------------------------------------------------------------------
+
    procedure affichierNomArticle(article : in T_nomArticle) is
 
    begin -- affichierNomArticle
@@ -858,6 +881,49 @@ package body gestion_commande is
 
       end loop;
    end visualisationBesoin;
+
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure afficherUneCommande(laCommande : in T_commande) is
+      -- permet d'afficher une commande uniquement
+
+      motVide : T_mot := (others => ' ');
+      prixVide : T_prix := (0, 0);
+
+   begin -- afficherUneCommande
+      put("Numero : ");
+      put(laCommande.nuCommande, 1);
+      new_line;
+      put("Identite : ");
+      afficherTexte(laCommande.identiteClient.nom);
+      put(" ");
+      afficherTexte(laCommande.identiteClient.prenom);
+      new_line;
+      put("Article : ");
+      new_line;
+      for i in laCommande.articleCommande'range loop
+         if laCommande.articleCommande(i).quantite >0 then
+            affichierNomArticle(i);
+            put(" : ");
+            put(laCommande.articleCommande(i).quantite, 1);
+            new_line;
+         end if;
+      end loop;
+
+      if laCommande.preparateur /= motVide then
+         put("Preparateur : ");
+         afficherTexte(laCommande.preparateur);
+         new_line;
+      end if;
+
+      if laCommande.montant /= prixVide then
+         put("Prix : ");
+         afficherPrix(laCommande.montant);
+      end if;
+
+
+   end afficherUneCommande;
 
 
 
