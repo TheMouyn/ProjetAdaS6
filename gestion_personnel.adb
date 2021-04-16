@@ -408,39 +408,44 @@ package body gestion_personnel is
          -- si le pseudo existe
          lePersonnel := recupereEmploye(tete, lePseudo);
          if lePersonnel.categorie = laCat then
-            loop -- compte le nombre de fois mdp faux
-               put_line("Veuillez saisir votre mot de passe");
-               saisieMotDePasse(leMDP);
+            if lePersonnel.mdpFaux = false then -- si le compte n'est pas bloque
+               loop -- compte le nombre de fois mdp faux
+                  put_line("Veuillez saisir votre mot de passe");
+                  saisieMotDePasse(leMDP);
 
-               -- calcul de l'empreinte
-               for i in leMDP'range loop
-                  laEmpreinte := character'pos(leMDP(i)) + laEmpreinte;
+                  -- calcul de l'empreinte
+                  for i in leMDP'range loop
+                     laEmpreinte := character'pos(leMDP(i)) + laEmpreinte;
+                  end loop;
+
+                  laEmpreinte := laEmpreinte + lePersonnel.nuMagique;
+                  laEmpreinte := laEmpreinte mod 1454;
+
+                  if lePersonnel.empreinte = laEmpreinte then
+                     -- si le mot de passe est bon
+                     put_line("Mot de passe bon");
+                     catConnectee := lePersonnel.categorie;
+                     pseudoConnecte := lePersonnel.pseudo;
+                     userConnecte := TRUE;
+                     exit;
+
+                  else
+                     put_line("Mot de passe faux !");
+                     new_line;
+                     compteur := compteur +1;
+                  end if;
+
+                  if laCat /= grandMagicien AND THEN compteur >= 3 then
+                     put_line("Vous avez fait 3 tentatives, votre compte est desactive, un nouveau mot de passe vous sera attribue");
+                     bloquageCompte(tete, fileMDPOublie, lePseudo);
+                     exit;
+
+                  end if;
                end loop;
+            else
+               put_line("Ce compte est bloque, un nouveau mot de passe vous sera attribue dans les meilleurs delais");
 
-               laEmpreinte := laEmpreinte + lePersonnel.nuMagique;
-               laEmpreinte := laEmpreinte mod 1454;
-
-               if lePersonnel.empreinte = laEmpreinte then
-                  -- si le mot de passe est bon
-                  put_line("Mot de passe bon");
-                  catConnectee := lePersonnel.categorie;
-                  pseudoConnecte := lePersonnel.pseudo;
-                  userConnecte := TRUE;
-                  exit;
-
-               else
-                  put_line("Mot de passe faux !");
-                  new_line;
-                  compteur := compteur +1;
-               end if;
-
-               if laCat /= grandMagicien AND THEN compteur >= 3 then
-                  put_line("Vous fait 3 tentatives, votre compte est desactive, un nouveau mot de passe vous sera attribue");
-                  bloquageCompte(tete, fileMDPOublie, lePseudo);
-                  exit;
-
-               end if;
-            end loop;
+            end if;
          else
             put_line("La categorie et le pseudo ne sont pas des informations coherantes au vue ce que qui a ete enregistre dans le logiciel");
 

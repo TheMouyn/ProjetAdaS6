@@ -11,7 +11,7 @@ package gestion_personnel is
       categorie : T_categorie;
       nuMagique : integer;
       empreinte : integer;
-      mdpFaux : boolean; -- permet de savoir si le mot de passe est valide ou non
+      mdpFaux : boolean := false; -- permet de savoir si le mot de passe est valide ou non : si compte bloque si TRUE
    end record;
 
    -- liste du personnel
