@@ -29,5 +29,6 @@ package gestion_client is
    procedure affichageCommandeEnAttenteReglement(racine : in T_arbreClient);
    procedure visuClient(racine : in T_arbreClient);
    procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; userConnecte : in T_mot);
-
+   procedure preparerCommande(filePreparation, fileFacturation : in out T_fileCommande; stock, tabBesoin : in out T_table_article; pseudoConnecte : in T_mot; nuCommande : in out integer);
+   
 end gestion_client;
