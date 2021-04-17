@@ -667,6 +667,121 @@ package body gestion_client is
 
    end facturationCommande;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure reglementCommande(arbreClient : in out T_arbreClient) is
+      -- permet d'effectuer le reglement d'une commande
+
+      function pointeurClient(racine : in T_arbreClient; leClient : in T_identite) return T_arbreClient is
+         -- permet de return un pointeur vers la liste des commandes en attente de paiement du client
+
+      begin -- pointeurClient
+         if racine /= null then
+            if leClient.nom < racine.val.identite.nom then
+               return pointeurClient(racine.fg, leClient);
+
+            elsif leClient.nom = racine.val.identite.nom then
+               if leClient.prenom < racine.val.identite.prenom then
+                  return pointeurClient(racine.fg, leClient);
+
+               elsif leClient.prenom = racine.val.identite.prenom then
+                  return racine;
+
+               else
+                  return pointeurClient(racine.fd, leClient);
+               end if;
+            else
+               return pointeurClient(racine.fd, leClient);
+            end if;
+         end if;
+
+      end pointeurClient;
+
+      leClient : T_identite;
+      nuCommande : integer := 0;
+      versLeClient : T_arbreClient := null;
+
+      lecture : T_PteurCommande := null;
+      confirmation : boolean := false;
+      laCommande : T_commande;
+
+   begin -- reglementCommande
+      put_line("Saisir l'identite du client pour effectuer un reglement");
+      saisieIdentite(leClient);
+      new_line;
+      clear_screen(black);
+
+      if clientExiste(arbreClient, leClient) then
+         versLeClient := pointeurClient(arbreClient, leClient);
+
+         if versLeClient.val.enAttentePaiement = null then
+            put_line("Ce client n'a pas de commande en attente de reglement");
+         else
+            visuCommandeEnAttentePaiement(versLeClient.val.enAttentePaiement);
+
+            put_line("Saisir le numero de commande a regler");
+            saisieInteger(0, integer'last, nuCommande);
+            new_line;
+
+            -- permet de savoir si le numero de commande saisie est bien une commande a regle du client en question
+            lecture := versLeClient.val.enAttentePaiement;
+            while lecture /= null loop
+               if lecture.val.nuCommande = nuCommande then
+                  confirmation := TRUE;
+                  laCommande := lecture.val;
+                  exit;
+               end if;
+               lecture := lecture.suiv;
+            end loop;
+
+
+            if confirmation then
+               -- on a une commade du client avec un numero coherent
+               put("La transaction de ");
+               afficherPrix(laCommande.montant);
+               put(" pour la commande numero ");
+               put(laCommande.nuCommande, 1);
+               put(" est enregistree");
+               new_line;
+
+               new_line;
+
+               -- deliser
+               suppressionCommandeListe(versLeClient.val.enAttentePaiement, laCommande);
+
+               -- mise a jout du montant du
+               versLeClient.val.montantDu := calculMontantDu(versLeClient.val.enAttentePaiement);
+
+               -- ajouter en archive
+               ajoutEnArchive(laCommande);
+
+               if versLeClient.val.montantDu = (0, 0) then
+                  put_line("Ce client n'a d'autre reglement a effectuer");
+
+               else
+                  put_line("Ce client a d'autre reglement a effectuer");
+                  put("Le montant du pour ce client est de ");
+                  afficherPrix(versLeClient.val.montantDu);
+                  new_line;
+                  
+               end if;
+
+
+            else
+               put_line("Cette commande n'est pas une commande en attente de reglement pour ce client");
+            end if;
+
+         end if;
+      else
+         put_line("Ce client n'existe pas dans le logiciel");
+
+      end if;
+
+
+
+
+   end reglementCommande;
+
 
 
 
