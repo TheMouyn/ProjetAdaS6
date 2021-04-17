@@ -899,6 +899,77 @@ package body gestion_commande is
 
    end calculMontantDu;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure calculBilanCA is
+      -- permet de calculer le bilan comptable
+      -- TODO: A tester avec des commandes archivees
+      laCommande : T_commande;
+
+
+      chiffreAffaire, moyenne : T_prix := (0, 0);
+      nbArticleLivre : T_table_article; -- deja initialise quantite a 0
+      nbCommandeLivre, nbCommandeAnnulee : integer := 0;
+
+   begin -- calculBilanCA
+      open(varFichier_T_commande, In_file, "FichierArchive");
+      while not End_of_file(varFichier_T_commande) loop
+         read(varFichier_T_commande, laCommande);
+
+         if laCommande.montant.ecu = 0 AND THEN laCommande.montant.galion = 0 then
+            -- commande annulee
+            nbCommandeAnnulee := nbCommandeAnnulee + 1;
+
+
+         else
+            -- commande livree
+            nbCommandeLivre := nbCommandeLivre + 1;
+
+            -- on ajout le nombre d'article de chaque commande
+            for i in laCommande.articleCommande'range loop
+               nbArticleLivre(i).quantite := nbArticleLivre(i).quantite + laCommande.articleCommande(i).quantite;
+            end loop;
+
+            chiffreAffaire := sommePrix(chiffreAffaire, laCommande.montant);
+         end if;
+      end loop;
+
+      close(varFichier_T_commande);
+
+      if nbCommandeLivre > 0 then
+         moyenne := moyennePrix(chiffreAffaire, nbCommandeLivre);
+      end if;
+
+      put("Le chiffre d'affaire est de ");
+      afficherPrix(chiffreAffaire);
+      new_line;
+
+      put("Le nombre de commande livre est : ");
+      put(nbCommandeLivre, 1);
+      new_line;
+
+      put("Le nombre de commande annulee est : ");
+      put(nbCommandeAnnulee, 1);
+      new_line;
+
+      if nbCommandeLivre > 0 then
+         put("Le montant moyen par commande est de ");
+         afficherPrix(moyenne);
+         new_line;
+      end if;
+
+      new_line;
+      put_line("Voici les quantites livres : ");
+
+      for i in nbArticleLivre'range loop
+         affichierNomArticle(i);
+         put(" => ");
+         put(nbArticleLivre(i).quantite, 1);
+         new_line;
+      end loop;
+
+   end calculBilanCA;
+
 
 
 
