@@ -869,6 +869,35 @@ package body gestion_commande is
       end if;
    end preparerCommande;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure enlisterCommande(tete : in out T_PteurCommande; laCommande : in T_commande) is
+      -- permet d'ajouter une commande a la fin d'une liste
+
+   begin -- enlisterCommande
+      if tete = null then
+         tete := new T_cellCommande'(laCommande, null);
+
+      else
+         enlisterCommande(tete.suiv, laCommande);
+
+      end if;
+   end enlisterCommande;
+
+-- ----------------------------------------------------------------------------------------------
+
+   function calculMontantDu(tete : in T_PteurCommande) return T_prix is
+
+   begin -- calculMontantDu
+      if tete = null then
+         return (0, 0);
+
+      else
+         return sommePrix(tete.val.montant, calculMontantDu(tete.suiv));
+
+      end if;
+
+   end calculMontantDu;
 
 
 
