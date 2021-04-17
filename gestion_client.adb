@@ -605,6 +605,69 @@ package body gestion_client is
    end visuCommandeUtilisateur;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in out T_arbreClient; stock : in T_table_article) is
+      -- permet la facturation d'une commande
+
+      procedure ajoutCommandeClient(racine : in out T_arbreClient; laCommande : in T_commande) is
+         -- permet d'ajouter une commande dans a la fin de la liste des commande en attente pour un client specifique
+
+      begin -- ajoutCommandeClient
+         if racine /= null then
+            if laCommande.identiteClient.nom < racine.val.identite.nom then
+               ajoutCommandeClient(racine.fg, laCommande);
+
+            elsif laCommande.identiteClient.nom = racine.val.identite.nom then
+               if laCommande.identiteClient.prenom < racine.val.identite.prenom then
+                  ajoutCommandeClient(racine.fg, laCommande);
+
+               elsif laCommande.identiteClient.prenom = racine.val.identite.prenom then
+                  enlisterCommande(racine.val.enAttentePaiement, laCommande);
+                  racine.val.montantDu := calculMontantDu(racine.val.enAttentePaiement);
+
+               else
+                  ajoutCommandeClient(racine.fd, laCommande);
+               end if;
+            else
+               ajoutCommandeClient(racine.fd, laCommande);
+            end if;
+         end if;
+
+      end ajoutCommandeClient;
+
+      laCommande : T_commande;
+      sommeGenerale : T_prix := (0, 0);
+
+   begin -- facturationCommande
+      if fileFacture.tete = null then
+         put_line("La file de facture est vide");
+
+      else
+         laCommande := fileFacture.tete.val;
+
+         -- calcul du prix article par article et de la somme generale
+         for i in laCommande.articleCommande'range loop
+            laCommande.articleCommande(i).prix := multiplicationPrix(laCommande.articleCommande(i).quantite, stock(i).prix);
+            sommeGenerale := sommePrix(sommeGenerale, laCommande.articleCommande(i).prix);
+         end loop;
+
+         -- application des frais de livraison et reduction
+         sommeGenerale := ajoutFraisLivraisonReduction(sommeGenerale);
+
+         laCommande.montant := sommeGenerale;
+
+         put_line("Voici le commande avec le prix calcule ainsi que les frais et reduction applique");
+         afficherUneCommande(laCommande);
+
+         defilerCommande(fileFacture);
+         ajoutCommandeClient(arbreClient, laCommande);
+
+      end if;
+
+   end facturationCommande;
+
+
 
 
 
