@@ -55,6 +55,7 @@ package gestion_commande is
    procedure visuCommandeEnAttentePrepa(tete : in T_PteurCommande);
    procedure visuCommandeEnAttentePrepaClient(tete : in T_PteurCommande; leClient : in T_identite);
    procedure ajoutEnArchive(laCommande : in T_commande);
+   procedure suppressionCommandeListe(tete : in out T_PteurCommande; laCommande : in T_commande);
    procedure suprCommande(file : in out T_fileCommande; laCommande : in T_commande);
    procedure visuCommandeEnAttenteFacturation(tete : in T_PteurCommande);
    procedure visuCommandeEnAttentePaiement(tete : in T_PteurCommande);

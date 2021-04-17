@@ -455,30 +455,35 @@ package body gestion_commande is
 
    end ajoutEnArchive;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure suppressionCommandeListe(tete : in out T_PteurCommande; laCommande : in T_commande) is
+      -- permet de supprimer la cellule de la commande
+      Procedure Liberer is new ada.unchecked_Deallocation(T_cellCommande, T_PteurCommande);
+
+      celluleASupr : T_PteurCommande;
+
+   begin -- suppressionCommandeListe
+      if tete /= null then
+         if tete.val = laCommande then
+            celluleASupr := tete;
+            tete := tete.suiv;
+            Liberer(celluleASupr);
+
+         else
+            suppressionCommandeListe(tete.suiv, laCommande);
+
+         end if;
+      end if;
+   end suppressionCommandeListe;
+
+
 
 -- ----------------------------------------------------------------------------------------------
 
    procedure suprCommande(file : in out T_fileCommande; laCommande : in T_commande) is
       -- permet de supprimer la commande de la file et de redefinir le file.fin
-      Procedure Liberer is new ada.unchecked_Deallocation(T_cellCommande, T_PteurCommande);
 
-      procedure suppression(tete : in out T_PteurCommande; laCommande : in T_commande) is
-         -- permet de supprimer la cellule de la commande
-         celluleASupr : T_PteurCommande;
-
-      begin -- suppression
-         if tete /= null then
-            if tete.val = laCommande then
-               celluleASupr := tete;
-               tete := tete.suiv;
-               -- Liberer(celluleASupr);
-
-            else
-               suppression(tete.suiv, laCommande);
-
-            end if;
-         end if;
-      end suppression;
 
       procedure redefinirFin(file : in out T_fileCommande) is
          -- permet de redefinir le pointeur de fin dans la file
@@ -499,7 +504,7 @@ package body gestion_commande is
 
 
    begin -- suprCommande
-      suppression(file.tete, laCommande);
+      suppressionCommandeListe(file.tete, laCommande);
 
       if file.tete = null then
          file.fin := null;
@@ -613,6 +618,7 @@ package body gestion_commande is
 
             afficherUneCommande(maCommande);
 
+            new_line;
             new_line;
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
