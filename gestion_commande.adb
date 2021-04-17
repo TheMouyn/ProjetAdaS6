@@ -788,6 +788,89 @@ package body gestion_commande is
    end afficherUneCommande;
 
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure preparerCommande(filePreparation, fileFacturation : in out T_fileCommande; stock, tabBesoin : in out T_table_article; pseudoConnecte : in T_mot; nuCommande : in out integer) is
+      -- permet de preparer une commande par un nain
+
+      laCommande, newCommande : T_commande;
+      stockSuffisant : boolean := true;
+
+   begin -- preparerCommande
+      if filePreparation.tete = null then
+         put_line("La file de commande en attente de preparation est vide");
+      else
+         laCommande := filePreparation.tete.val;
+
+         put_line("Voici la commande a traiter :");
+         afficherUneCommande(laCommande);
+
+         new_line;
+         put_line("Appuyez sur entrer pour continuer");
+         skip_Line;
+
+         newCommande := laCommande;
+
+         -- remise a 0 des quantite du tableau
+         for i in newCommande.articleCommande'range loop
+            newCommande.articleCommande(i).quantite := 0;
+         end loop;
+
+
+         for i in laCommande.articleCommande'range loop
+            if stock(i).quantite >= laCommande.articleCommande(i).quantite then
+               -- si le stock est suffisant
+               stock(i).quantite := stock(i).quantite - laCommande.articleCommande(i).quantite;
+
+            else
+               -- si le stock n'est pas suffisant
+               stockSuffisant := false;
+               newCommande.articleCommande(i).quantite := laCommande.articleCommande(i).quantite - stock(i).quantite;
+               laCommande.articleCommande(i).quantite := stock(i).quantite;
+               stock(i).quantite := 0;
+
+               -- mise a jour tableau des besoins
+               tabBesoin(i).quantite := tabBesoin(i).quantite + newCommande.articleCommande(i).quantite;
+            end if;
+         end loop;
+
+         new_line;
+
+         laCommande.preparateur := pseudoConnecte;
+         if stockSuffisant then
+            put_line("Vous pouvez allez preparer cette commande");
+            -- on defile la premiere commande en attente de preparation
+            defilerCommande(filePreparation);
+
+            -- on enfiler la commande dans la file des commandes en attente de facturation
+            enfilerCommande(fileFacturation, laCommande);
+            -- IDEA: ne pas supprimer puis re-creer une cellule mais la deplacer
+
+
+         else
+            -- si le stock n'est pas suffisant
+            clear_screen(black);
+            put_line("Le stock n'est pas suffisant, voici la commande a preparer");
+            afficherUneCommande(laCommande);
+            new_line;
+            new_line;
+
+            put_line("Voici la nouvelle commande qui sera ajouter dans les commandes en attente de preparation");
+            nuCommande := nuCommande + 1;
+            newCommande.nuCommande := nuCommande;
+            afficherUneCommande(newCommande);
+            new_line;
+            new_line;
+
+            enfilerCommande(filePreparation, newCommande);
+            defilerCommande(filePreparation);
+            enfilerCommande(fileFacturation, laCommande);
+         end if;
+      end if;
+   end preparerCommande;
+
+
+
 
 
 
