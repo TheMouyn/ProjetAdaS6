@@ -14,6 +14,7 @@ package gestion_prix is
    procedure afficherPrix(prix : in T_prix);
    function multiplicationPrix(nbFois : in integer; prix : in T_prix) return T_prix;
    function ajoutFraisLivraisonReduction(prix : in T_prix) return T_prix;
+   function moyennePrix(somme : in T_prix; nbElement : in integer) return T_prix;
 
 
 end gestion_prix;

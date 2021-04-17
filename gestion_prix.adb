@@ -87,6 +87,28 @@ package body gestion_prix is
 
    end ajoutFraisLivraisonReduction;
 
+-- ----------------------------------------------------------------------------------------------
+
+   function moyennePrix(somme : in T_prix; nbElement : in integer) return T_prix is
+      -- permet de faire la moyenne d'un T_prix
+      resultat : T_prix := (0, 0);
+
+   begin -- moyennePrix
+      resultat.galion := somme.galion;
+      resultat.galion := resultat.galion + (somme.ecu * 15);
+
+      resultat.galion := resultat.galion / nbElement;
+
+      while resultat.galion >= 15 loop
+         resultat.ecu := resultat.ecu +1;
+         resultat.galion := resultat.galion - 15;
+      end loop;
+
+      return resultat;
+
+
+   end moyennePrix;
+
 
 
 end gestion_prix;
