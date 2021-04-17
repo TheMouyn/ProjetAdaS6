@@ -262,26 +262,28 @@ package body gestion_personnel is
       end if;
    end suppressionEmploye;
 
+-- ----------------------------------------------------------------------------------------------
+
+   procedure enfilerPseudo(file: in out T_filePseudo; lePseudo : in T_mot) is
+      -- permet d'enfiler le pseudo a la fin de la file
+
+   begin -- enfilerPseudo
+      if file.tete = null then
+         file.tete := new T_cellPseudo'(lePseudo, null);
+         file.fin := file.tete;
+
+      else
+         file.fin.suiv := new T_cellPseudo'(lePseudo, null);
+         file.fin := file.fin.suiv;
+      end if;
+   end enfilerPseudo;
+
 
 -- ----------------------------------------------------------------------------------------------
 
    procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo) is
       -- TODO: A tester avec connexion et generation des nouveau mdp par le grand magicien
       -- permet de modifier le record T_personnel et ajouter le pseudo dans la file
-
-      procedure enfilerPseudo(file: in out T_filePseudo; lePseudo : in T_mot) is
-         -- permet d'enfiler le pseudo a la fin de la file
-
-      begin -- enfilerPseudo
-         if file.tete = null then
-            file.tete := new T_cellPseudo'(lePseudo, null);
-            file.fin := file.tete;
-
-         else
-            file.fin.suiv := new T_cellPseudo'(lePseudo, null);
-            file.fin := file.fin.suiv;
-         end if;
-      end enfilerPseudo;
 
       procedure rechercheChangement(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
          -- permet de rechercher dans la liste et de changer le boolean mdpFaux
@@ -349,20 +351,6 @@ package body gestion_personnel is
 
    procedure bloquageCompte(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot) is
       -- permet de bloquer un compte d'ajouter le pseudo dans la liste des mdp a generer
-      procedure enfilerPseudo(file : in out T_filePseudo; lePseudo : in T_mot) is
-         -- permet d'enfiler le pseudo dans la file des mots de passe oublies
-
-      begin -- enfilerPseudo
-         if file.tete = null then
-            file.tete := new T_cellPseudo'(lePseudo, null);
-            file.fin := file.tete;
-
-         else
-            file.fin.suiv := new T_cellPseudo'(lePseudo, null);
-            file.fin := file.fin.suiv;
-
-         end if;
-      end enfilerPseudo;
 
    begin -- bloquageCompte
       if tete /= null then
@@ -412,6 +400,8 @@ package body gestion_personnel is
          if lePersonnel.categorie = laCat then
             if lePersonnel.mdpFaux = false then -- si le compte n'est pas bloque
                loop -- compte le nombre de fois mdp faux
+                  laEmpreinte := 0;
+
                   put_line("Veuillez saisir votre mot de passe");
                   put("=> ");
                   get_line(unMot, k);
@@ -475,5 +465,81 @@ package body gestion_personnel is
 
    end seDeconnecter;
 
+
+-- ----------------------------------------------------------------------------------------------
+
+   procedure genererMDP(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo) is
+      -- permet de traiter le premier element de la list afin de saisir un nouveau mdp pour l'employer
+
+      procedure remplacementEmploye(tete : in out T_PteurPersonnel; lePersonnel : in T_personnel) is
+
+      begin -- remplacementEmploye
+         if tete /= null then
+            if tete.val.pseudo = lePersonnel.pseudo then
+               tete.val := lePersonnel;
+
+            else
+
+               remplacementEmploye(tete.suiv, lePersonnel);
+            end if;
+         end if;
+
+      end remplacementEmploye;
+
+      lectureFile : T_PteurPseudo := fileMDPOublie.tete;
+      lePersonnel : T_personnel;
+      leMDP : T_MDP;
+      laEmpreinte : integer := 0;
+
+   begin -- genererMDP
+      if fileMDPOublie.tete = null then
+         put_line("La file de demande de mot de passe est vide");
+
+      else
+         put_line("Voici la liste des pseudo dont les mots de passe sont a re-generer :");
+         while lectureFile /= null loop
+            afficherTexte(lectureFile.val);
+            lectureFile := lectureFile.suiv;
+            new_line;
+         end loop;
+
+         suivant;
+
+         lePersonnel := recupereEmploye(tete, fileMDPOublie.tete.val);
+
+         put("Saisir le nouveau mot de passe pour ");
+         afficherTexte(lePersonnel.pseudo);
+         new_line;
+
+         saisieMotDePasse(leMDP);
+
+         -- calcul de l'empreinte
+         for i in leMDP'range loop
+            laEmpreinte := character'pos(leMDP(i)) + laEmpreinte;
+         end loop;
+         laEmpreinte := laEmpreinte + lePersonnel.nuMagique;
+         laEmpreinte := laEmpreinte mod 1454;
+
+         lePersonnel.empreinte := laEmpreinte;
+         lePersonnel.mdpFaux := FALSE;
+
+         remplacementEmploye(tete, lePersonnel);
+
+         clear_screen(black);
+         put("Le nouveau mot de passe de ");
+         afficherTexte(lePersonnel.pseudo);
+         new_line;
+         put("Est : ");
+         put(leMDP);
+         new_line;
+
+         -- defiler
+         fileMDPOublie.tete := fileMDPOublie.tete.suiv;
+         if fileMDPOublie.tete = null then
+            fileMDPOublie.fin := null;
+         end if;
+
+      end if;
+   end genererMDP;
 
 end gestion_personnel;
