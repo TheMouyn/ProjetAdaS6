@@ -413,6 +413,7 @@ package body gestion_personnel is
             if lePersonnel.mdpFaux = false then -- si le compte n'est pas bloque
                loop -- compte le nombre de fois mdp faux
                   put_line("Veuillez saisir votre mot de passe");
+                  put("=> ");
                   get_line(unMot, k);
                   leMDP := unMot(1..8);
                   if k /= 8 then
