@@ -389,6 +389,8 @@ package body gestion_personnel is
       lePseudo : T_mot := (others => ' ');
       laCat : T_categorie;
       lePersonnel : T_personnel;
+      unMot : T_mot := (others => ' ');
+      k : integer := 0;
       leMDP : T_MDP;
       laEmpreinte : integer := 0;
 
@@ -411,7 +413,12 @@ package body gestion_personnel is
             if lePersonnel.mdpFaux = false then -- si le compte n'est pas bloque
                loop -- compte le nombre de fois mdp faux
                   put_line("Veuillez saisir votre mot de passe");
-                  saisieMotDePasse(leMDP);
+                  get_line(unMot, k);
+                  leMDP := unMot(1..8);
+                  if k /= 8 then
+                     laEmpreinte := -1;
+                  end if;
+                  -- IDEA: Augmenter la securiter avec le nombre de caracteres et exception
 
                   -- calcul de l'empreinte
                   for i in leMDP'range loop
