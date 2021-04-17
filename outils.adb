@@ -73,14 +73,34 @@ package body outils is
    procedure saisieString(texte : out T_mot) is
       -- permet la saisie d'un string de 50 caracteres
      k : integer:=0;
+     carSpe : boolean := false;
 
    begin -- saisieString
      loop
+        k := 0;
+        carSpe := false;
        texte := (others => ' ');
        put("=> ");
        get_line(texte, k); new_line;
-       exit when k<=50 and k>0;
-       put("Votre mot est vide ou supperieur a 50 caracteres, veuillez réessayer"); new_line;
+
+      -- traitement des caractere speciaux non autorise sauf nom compose donc '-' et ' '
+      for i in texte'range loop
+       if (not(texte(i) in 'a'..'z')) AND (not(texte(i) in 'A'..'Z') AND texte(i) /= '-' AND texte(i) /= ' ') then
+          carSpe := TRUE;
+          exit;
+       end if;
+      end loop;
+
+       exit when k<=50 and k>0 and carSpe = false;
+
+      if k = 0 or k > 50 then
+         put("Votre mot est vide ou supperieur a 50 caracteres, veuillez réessayer"); new_line;
+      end if;
+
+      if carSpe then
+         put_line("Votre mot contient un/des caractere(s) speciaux, ce n'est pas autorise");
+      end if;
+
      end loop;
 
      -- traitement de la casse : on stock tous les t_mot en majuscule
