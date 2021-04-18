@@ -462,6 +462,7 @@ package body gestion_personnel is
       userConnecte := FALSE;
       catConnectee := nain;
       pseudoConnecte := (others => ' ');
+      put_line("Vous avez bien ete deconnecte");
 
    end seDeconnecter;
 
