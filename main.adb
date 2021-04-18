@@ -81,6 +81,7 @@ begin -- main
             put("Vous etes connecte en tant que ");
             afficherTexte(pseudoConnecte);
             new_line;
+            new_line;
 
             put_line("1 - Prendre en chage une commande");
             put_line("2 - Visualisation de toutes les commandes gerees par vous");
@@ -108,8 +109,9 @@ begin -- main
             put("Vous etes connecte en tant que ");
             afficherTexte(pseudoConnecte);
             new_line;
+            new_line;
 
-            put_line("1 - Generer une facture");
+            put_line("1 - Etablir une facture");
             put_line("2 - Enregistrer un reglement");
             put_line("3 - Visualiser les commandes en attente de facturation");
             put_line("4 - Visualiser les commandes en attente de reglement");
@@ -139,6 +141,7 @@ begin -- main
             put("Vous etes connecte en tant que ");
             afficherTexte(pseudoConnecte);
             new_line;
+            new_line;
 
             put_line("1 - Visualiser le stock");
             put_line("2 - Visualiser les besoins");
@@ -163,6 +166,7 @@ begin -- main
             titre;
             put("Vous etes connecte en tant que ");
             afficherTexte(pseudoConnecte);
+            new_line;
             new_line;
 
             put_line("1 - Visualiser la liste des employes");
