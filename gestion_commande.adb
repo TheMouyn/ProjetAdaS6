@@ -689,6 +689,7 @@ package body gestion_commande is
             afficherUneCommande(maCommande);
 
             new_line;
+            new_line;
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
@@ -706,7 +707,7 @@ package body gestion_commande is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure reapprovisionnementStock(stock : in out T_table_article) is
+   procedure reapprovisionnementStock(stock, tabBesoin : in out T_table_article) is
       -- permet de rajouter des articles dans le stock
       ajout : T_table_article;
 
@@ -718,6 +719,11 @@ package body gestion_commande is
          affichierNomArticle(i);
          put(" ");
          saisieInteger(0, integer'last-stock(i).quantite, ajout(i).quantite);
+         if ajout(i).quantite >= tabBesoin(i).quantite then
+            tabBesoin(i).quantite := 0;
+         else
+            tabBesoin(i).quantite := tabBesoin(i).quantite - ajout(i).quantite;
+         end if;
       end loop;
 
       for i in stock'range loop
