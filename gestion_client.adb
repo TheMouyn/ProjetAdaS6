@@ -409,7 +409,7 @@ package body gestion_client is
 
             else
                -- si la commande n'est pas trouve
-               put_line("Il n'y a pas de commande qui correspond aux criteres");
+               put_line("Il n'y a pas de commande qui corresponde aux criteres");
 
             end if;
 
@@ -756,14 +756,14 @@ package body gestion_client is
                ajoutEnArchive(laCommande);
 
                if versLeClient.val.montantDu = (0, 0) then
-                  put_line("Ce client n'a d'autre reglement a effectuer");
+                  put_line("Ce client n'a pas d'autre reglement a effectuer");
 
                else
                   put_line("Ce client a d'autre reglement a effectuer");
                   put("Le montant du pour ce client est de ");
                   afficherPrix(versLeClient.val.montantDu);
                   new_line;
-                  
+
                end if;
 
 

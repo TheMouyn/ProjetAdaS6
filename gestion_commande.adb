@@ -55,8 +55,8 @@ package body gestion_commande is
       leNom(1..8) := "BEAUPRES";
       article(potionInvisibilite).quantite := 0;
       article(potionMetamorphose).quantite := 4;
-      article(baguette).quantite := 1;
-      article(epee).quantite := 0;
+      article(baguette).quantite := 0;
+      article(epee).quantite := 1;
       article(filtreAmour).quantite := 10;
       article(sortImmobilisation).quantite := 4;
       enfiler(fileCommandeEnAttente, (leNom, lePrenom), 13, article);
