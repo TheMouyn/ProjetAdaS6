@@ -33,7 +33,7 @@ procedure main is
    pseudoConnecte : T_mot := (others => ' '); -- permet de stocker le pseudo de l'utilisateur connecte
 
    -- variables de choix/menu
-   choix1, choix2 : character;
+   choix : character;
 
 
 begin -- main
@@ -61,9 +61,9 @@ begin -- main
          new_line;
          put_line("Que souhaitez-vous faire ?");
          put("=> ");
-         get(choix1); skip_line; new_line;
+         get(choix); skip_line; new_line;
 
-         case choix1 is
+         case choix is
             when 'Q' | 'q' => exit;
             when '1' => clear_screen(black); nouvelleCommande(commandeEnAttenteDePreparation, arbreClient, nuCommande); suivant;
             when '2' => clear_screen(black); annulerCommande(commandeEnAttenteDePreparation, arbreClient); suivant;
@@ -91,9 +91,9 @@ begin -- main
             new_line;
             put_line("Que souhaitez-vous faire ?");
             put("=> ");
-            get(choix2); skip_line; new_line;
+            get(choix); skip_line; new_line;
 
-            case choix2 is
+            case choix is
                when '1' => clear_screen(black); preparerCommande(commandeEnAttenteDePreparation, commandeEnAttenteDeFacturation, leStock, tabBesoin, pseudoConnecte, nuCommande); suivant;
                when '2' => clear_screen(black); visuCommandeUtilisateur(commandeEnAttenteDeFacturation.tete, arbreClient, pseudoConnecte); suivant;
                when '3' => clear_screen(black); visuCommandeEnAttentePrepa(commandeEnAttenteDePreparation.tete); suivant;
@@ -122,9 +122,9 @@ begin -- main
             new_line;
             put_line("Que souhaitez-vous faire ?");
             put("=> ");
-            get(choix2); skip_line; new_line;
+            get(choix); skip_line; new_line;
 
-            case choix2 is
+            case choix is
                when '1' => clear_screen(black); facturationCommande(commandeEnAttenteDeFacturation, arbreClient, leStock); suivant;
                when '2' => clear_screen(black); reglementCommande(arbreClient); suivant;
                when '3' => clear_screen(black); visuCommandeEnAttenteFacturation(commandeEnAttenteDeFacturation.tete); suivant;
@@ -151,9 +151,9 @@ begin -- main
             new_line;
             put_line("Que souhaitez-vous faire ?");
             put("=> ");
-            get(choix2); skip_line; new_line;
+            get(choix); skip_line; new_line;
 
-            case choix2 is
+            case choix is
                when '1' => clear_screen(black); afficherStock(leStock); suivant;
                when '2' => clear_screen(black); visualisationBesoin(tabBesoin); suivant;
                when '3' => clear_screen(black); reapprovisionnementStock(leStock, tabBesoin); suivant;
@@ -180,9 +180,9 @@ begin -- main
             new_line;
             put_line("Que souhaitez-vous faire ?");
             put("=> ");
-            get(choix2); skip_line; new_line;
+            get(choix); skip_line; new_line;
 
-            case choix2 is
+            case choix is
                when '1' => clear_screen(black); visuEmploye(lePersonnel); suivant;
                when '2' => clear_screen(black); nouvelleEmbauche(lePersonnel); suivant;
                when '3' => clear_screen(black); suppressionEmploye(lePersonnel); suivant;
