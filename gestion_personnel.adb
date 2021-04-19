@@ -282,7 +282,6 @@ package body gestion_personnel is
 -- ----------------------------------------------------------------------------------------------
 
    procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo) is
-      -- TODO: A tester avec connexion et generation des nouveau mdp par le grand magicien
       -- permet de modifier le record T_personnel et ajouter le pseudo dans la file
 
       procedure rechercheChangement(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
@@ -372,7 +371,6 @@ package body gestion_personnel is
 
    procedure seConnecter(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot) is
       -- permet de se connecter et de modifier les variables de sessions
-      -- TODO: A TESTER
 
       lePseudo : T_mot := (others => ' ');
       laCat : T_categorie;
@@ -404,12 +402,15 @@ package body gestion_personnel is
 
                   put_line("Veuillez saisir votre mot de passe");
                   put("=> ");
+                  begin
                   get_line(unMot, k);
+                  exception
+                     when others => null;
+                  end
                   leMDP := unMot(1..8);
                   if k /= 8 then
                      laEmpreinte := -1;
                   end if;
-                  -- IDEA: Augmenter la securiter avec le nombre de caracteres et exception
 
                   -- calcul de l'empreinte
                   for i in leMDP'range loop
