@@ -237,9 +237,10 @@ package body gestion_personnel is
       end rechercheDel;
 
 
-      lePseudo : T_mot := (others => ' ');
+      lePseudo, leGerant : T_mot := (others => ' ');
 
    begin -- suppressionEmploye
+      leGerant(1..8) := "MANDRAKE";
       if tete = null then
          put_line("La liste des employe est vide !");
       else
@@ -247,13 +248,18 @@ package body gestion_personnel is
          saisieString(lePseudo);
 
          if employeExiste(tete, lePseudo) then
-            rechercheDel(tete, lePseudo);
-            new_line;
+            if lePseudo /= leGerant then
+               rechercheDel(tete, lePseudo);
+               new_line;
 
-            afficherTexte(lePseudo);
-            put(" a ete supprime");
-            new_line;
+               afficherTexte(lePseudo);
+               put(" a ete supprime");
+               new_line;
 
+            else
+               put_line("Vous ne pouvez pas supprimer le grand magicien original");
+
+            end if;
          else
             put_line("Ce personnel n'existe pas dans le logiciel");
 
@@ -402,11 +408,13 @@ package body gestion_personnel is
 
                   put_line("Veuillez saisir votre mot de passe");
                   put("=> ");
+                  
                   begin
                   get_line(unMot, k);
                   exception
                      when others => null;
-                  end
+                  end;
+
                   leMDP := unMot(1..8);
                   if k /= 8 then
                      laEmpreinte := -1;
