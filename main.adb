@@ -137,7 +137,7 @@ begin -- main
                when '2' => clear_screen(black); reglementCommande(arbreClient); suivant;
                when '3' => clear_screen(black); visuCommandeEnAttenteFacturation(commandeEnAttenteDeFacturation.tete); suivant;
                when '4' => clear_screen(black); affichageCommandeEnAttenteReglement(arbreClient); suivant;
-               when '5' => clear_screen(black); visuCommandeArchivee; suivant;
+               when '5' => clear_screen(black); visuCommandeArchivee; visuCommandeAnnulee; suivant;
                when '6' => clear_screen(black); calculBilanCA; suivant;
                when 'D' | 'd' => seDeconnecter(userConnecte, catConnectee, pseudoConnecte); suivant;
                when others => put_line("Choix non propose"); suivant;
@@ -151,7 +151,7 @@ begin -- main
             new_line;
             new_line;
 
-            put_line("1 - Visualiser le stock");
+            put_line("1 - Visualiser le stock et les prix");
             put_line("2 - Visualiser les besoins");
             put_line("3 - Reapprovisionnement le stock");
             put_line("D - Se deconnecter");
@@ -180,7 +180,7 @@ begin -- main
             put_line("1 - Visualiser la liste des employes");
             put_line("2 - Nouvelle embauche");
             put_line("3 - Supprimer un membre du personnel");
-            put_line("4 - Visualiser le stock");
+            put_line("4 - Visualiser le stock et les prix");
             put_line("5 - Visualiser la liste des clients");
             put_line("6 - Traitement des mots de passe oublies");
             put_line("D - Se deconnecter");

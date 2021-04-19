@@ -617,6 +617,9 @@ package body gestion_commande is
 
 
             afficherUneCommande(maCommande);
+            new_line;
+            new_line;
+            put_line("Cette commande est une commande reglee");
 
             new_line;
             new_line;
@@ -653,6 +656,10 @@ package body gestion_commande is
 
 
             afficherUneCommande(maCommande);
+            new_line;
+            put_line("Cette commande est une commande annulee");
+
+            new_line;
 
             new_line;
 
