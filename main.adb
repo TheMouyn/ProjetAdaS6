@@ -8,7 +8,7 @@ procedure main is
    begin -- titre
       new_line;
       put_line("          ******************************************          ");
-      put_line("                AU GAI MAGICIEN : LA BOUTIQUE                 ");
+      put_line("                 AU GAI MAGICIEN : LA BOUTIQUE                ");
       put_line("          ******************************************          ");
       new_line; new_line;
    end titre;
@@ -34,17 +34,25 @@ procedure main is
 
    -- variables de choix/menu
    choix : character;
+   confInit : boolean;
 
 
 begin -- main
-   nuCommande := 19;
-   initStock(leStock);
-   initClient(arbreClient);
-   initCommandeEnAttenteDePreparation(commandeEnAttenteDePreparation);
-   initCommandeEnAttenteDeFacturation(commandeEnAttenteDeFacturation);
-   initCommandeEnAttenteDeReglement(arbreClient);
-   initCommandeAnnulee;
-   iniPersonnel(lePersonnel);
+   put_line("Voulez-vous charger les donnees de test ?");
+   saisieBoolean(confInit);
+   if confInit then
+      nuCommande := 19;
+      initStock(leStock);
+      initClient(arbreClient);
+      initCommandeEnAttenteDePreparation(commandeEnAttenteDePreparation);
+      initCommandeEnAttenteDeFacturation(commandeEnAttenteDeFacturation);
+      initCommandeEnAttenteDeReglement(arbreClient);
+      initCommandeAnnulee;
+      iniPersonnel(lePersonnel);
+      new_line;
+      put_line("Les donnees ont ete initialisees");
+   end if;
+   suivant;
 
    loop
       if userConnecte = false then
