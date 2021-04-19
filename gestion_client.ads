@@ -31,5 +31,6 @@ package gestion_client is
    procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; pseudoConnecte : in T_mot);
    procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in out T_arbreClient; stock : in T_table_article);
    procedure reglementCommande(arbreClient : in out T_arbreClient);
+   procedure calculBilanCA(teteFacture : in T_PteurCommande; arbreClient : in T_arbreClient);
 
 end gestion_client;

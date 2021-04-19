@@ -396,6 +396,7 @@ package body gestion_commande is
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car /= 'q' AND car /= 'Q' then
                clear_screen(black);
                visuCommandeEnAttentePrepa(tete.suiv);
@@ -428,6 +429,7 @@ package body gestion_commande is
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car /= 'q' AND car /= 'Q' then
                clear_screen(black);
                visuCommandeEnAttentePrepaClient(tete.suiv, leClient);
@@ -533,6 +535,7 @@ package body gestion_commande is
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car /= 'q' AND car /= 'Q' then
                clear_screen(black);
                visuCommandeEnAttenteFacturation(tete.suiv);
@@ -563,6 +566,7 @@ package body gestion_commande is
          if tete.suiv /= null then
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car /= 'q' AND car /= 'Q' then
                clear_screen(black);
                visuCommandeEnAttentePaiement(tete.suiv);
@@ -626,6 +630,7 @@ package body gestion_commande is
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car = 'q' OR car = 'Q' then
                exit;
 
@@ -665,6 +670,7 @@ package body gestion_commande is
 
             put("Appuyer sur entrer pour afficher la commande suivante, Appuyez sur 'Q' pour Quitter");
             get_immediate(car);
+            new_line;
             if car = 'q' OR car = 'Q' then
                exit;
 
@@ -920,17 +926,14 @@ package body gestion_commande is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure calculBilanCA is
-      -- permet de calculer le bilan comptable
-      -- TODO: A tester avec des commandes archivees
+   procedure calculBilanCAArchive(nbCommandeLivre, nbCommandeAnnulee, nbCommandeAvecPrix : in out integer; nbArticleLivre : in out T_table_article; chiffreAffaire : in out T_prix) is
+      -- permet de calculer le bilan CA pour la partie archivee
+      -- impossible dans gestion_client car la porte de variable fichier insufisante
+
       laCommande : T_commande;
 
 
-      chiffreAffaire, moyenne : T_prix := (0, 0);
-      nbArticleLivre : T_table_article; -- deja initialise quantite a 0
-      nbCommandeLivre, nbCommandeAnnulee : integer := 0;
-
-   begin -- calculBilanCA
+   begin -- calculBilanCAArchive
       open(varFichier_T_commande, In_file, "FichierArchive");
       while not End_of_file(varFichier_T_commande) loop
          read(varFichier_T_commande, laCommande);
@@ -939,10 +942,10 @@ package body gestion_commande is
             -- commande annulee
             nbCommandeAnnulee := nbCommandeAnnulee + 1;
 
-
          else
             -- commande livree
             nbCommandeLivre := nbCommandeLivre + 1;
+            nbCommandeAvecPrix := nbCommandeAvecPrix + 1;
 
             -- on ajout le nombre d'article de chaque commande
             for i in laCommande.articleCommande'range loop
@@ -955,46 +958,7 @@ package body gestion_commande is
 
       close(varFichier_T_commande);
 
-      if nbCommandeLivre > 0 then
-         moyenne := moyennePrix(chiffreAffaire, nbCommandeLivre);
-      end if;
 
-      put("Le chiffre d'affaire est de ");
-      afficherPrix(chiffreAffaire);
-      new_line;
-
-      put("Le nombre de commande livre est : ");
-      put(nbCommandeLivre, 1);
-      new_line;
-
-      put("Le nombre de commande annulee est : ");
-      put(nbCommandeAnnulee, 1);
-      new_line;
-
-      if nbCommandeLivre > 0 then
-         put("Le montant moyen par commande est de ");
-         afficherPrix(moyenne);
-         new_line;
-      end if;
-
-      new_line;
-      put_line("Voici les quantites livres : ");
-
-      for i in nbArticleLivre'range loop
-         affichierNomArticle(i);
-         put(" => ");
-         put(nbArticleLivre(i).quantite, 1);
-         new_line;
-      end loop;
-
-   end calculBilanCA;
-
-
-
-
-
-
-
-
+   end calculBilanCAArchive;
 
 end gestion_commande;

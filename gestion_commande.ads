@@ -69,6 +69,6 @@ package gestion_commande is
    procedure preparerCommande(filePreparation, fileFacturation : in out T_fileCommande; stock, tabBesoin : in out T_table_article; pseudoConnecte : in T_mot; nuCommande : in out integer);
    procedure enlisterCommande(tete : in out T_PteurCommande; laCommande : in T_commande);
    function calculMontantDu(tete : in T_PteurCommande) return T_prix;
-   procedure calculBilanCA;
+   procedure calculBilanCAArchive(nbCommandeLivre, nbCommandeAnnulee, nbCommandeAvecPrix : in out integer; nbArticleLivre : in out T_table_article; chiffreAffaire : in out T_prix);
 
 end gestion_commande;

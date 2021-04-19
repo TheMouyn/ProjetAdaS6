@@ -782,7 +782,115 @@ package body gestion_client is
 
    end reglementCommande;
 
+-- ----------------------------------------------------------------------------------------------
 
+   procedure calculBilanCA(teteFacture : in T_PteurCommande; arbreClient : in T_arbreClient) is
+      -- permet de calculer le bilan comptable
+      -- une commande est consideree comme livree apres la preparation de commande
+      -- on prend donc en compte les commandes en attente de reglement pour le montant moyen par commande
+      -- prendre en compte les commandes en attente de facturation et reglement pour le nbArticleLivre
+
+      procedure ajoutArticleEnAttenteReglement(racine : in T_arbreClient; nbArticleLivre : in out T_table_article; nbCommandeLivre, nbCommandeAvecPrix : in out integer; somme : in out T_prix) is
+         -- permet de compter le nombre d'article livre, le nombre de commande livre, et sommer les prix
+         lecture : T_PteurCommande := null;
+
+      begin -- ajoutArticleEnAttenteReglement
+         if racine /= null then
+            if racine.val.enAttentePaiement /= null then
+               lecture := racine.val.enAttentePaiement;
+               while lecture /= null loop
+                  -- on ajoute les articles livre en attente de reglement
+                  for i in lecture.val.articleCommande'range loop
+                     nbArticleLivre(i).quantite := nbArticleLivre(i).quantite + lecture.val.articleCommande(i).quantite;
+                  end loop;
+
+                  -- increment du nombre de commande livree
+                  nbCommandeLivre := nbCommandeLivre +1;
+                  nbCommandeAvecPrix := nbCommandeAvecPrix +1;
+
+                  -- increment de la somme
+                  somme := sommePrix(somme, lecture.val.montant);
+
+                  lecture := lecture.suiv;
+
+               end loop;
+            end if;
+            ajoutArticleEnAttenteReglement(racine.fg, nbArticleLivre, nbCommandeLivre, nbCommandeAvecPrix, somme);
+            ajoutArticleEnAttenteReglement(racine.fd, nbArticleLivre, nbCommandeLivre, nbCommandeAvecPrix, somme);
+
+         end if;
+
+      end ajoutArticleEnAttenteReglement;
+
+
+
+
+
+      lectureFacture : T_PteurCommande := teteFacture;
+
+      chiffreAffaire, somme, moyenne : T_prix := (0, 0);
+      nbArticleLivre : T_table_article; -- deja initialise quantite a 0
+      nbCommandeLivre, nbCommandeAnnulee, nbCommandeAvecPrix : integer := 0;
+
+   begin -- calculBilanCA
+      -- calcul pour les commandes archivees
+      calculBilanCAArchive(nbCommandeLivre, nbCommandeAnnulee, nbCommandeAvecPrix, nbArticleLivre, chiffreAffaire);
+
+
+      somme := chiffreAffaire;
+
+      -- en attente facture
+
+      while lectureFacture /= null loop
+         -- on incremente le nombre le commande livree
+         nbCommandeLivre := nbCommandeLivre + 1;
+
+         -- on ajoute les articles livre en attente de facturation
+         for i in lectureFacture.val.articleCommande'range loop
+            nbArticleLivre(i).quantite := nbArticleLivre(i).quantite + lectureFacture.val.articleCommande(i).quantite;
+         end loop;
+         lectureFacture := lectureFacture.suiv;
+      end loop;
+
+
+      -- pour chaque en attente de reglement
+      ajoutArticleEnAttenteReglement(arbreClient, nbArticleLivre, nbCommandeLivre, nbCommandeAvecPrix, somme);
+
+      -- affichage
+
+      if nbCommandeAvecPrix > 0 then
+         moyenne := moyennePrix(somme, nbCommandeAvecPrix);
+      end if;
+
+      put("Le chiffre d'affaire est de ");
+      afficherPrix(chiffreAffaire);
+      new_line;
+
+      put("Le nombre de commande livre est : ");
+      put(nbCommandeLivre, 1);
+      new_line;
+
+      put("Le nombre de commande annulee est : ");
+      put(nbCommandeAnnulee, 1);
+      new_line;
+
+      if nbCommandeAvecPrix > 0 then
+         put("Le montant moyen par commande est de ");
+         afficherPrix(moyenne);
+         new_line;
+      end if;
+
+      new_line;
+      put_line("Voici les quantites livres : ");
+
+      for i in nbArticleLivre'range loop
+         affichierNomArticle(i);
+         put(" => ");
+         put(nbArticleLivre(i).quantite, 1);
+         new_line;
+      end loop;
+
+   end calculBilanCA;
 
 
 

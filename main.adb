@@ -138,7 +138,7 @@ begin -- main
                when '3' => clear_screen(black); visuCommandeEnAttenteFacturation(commandeEnAttenteDeFacturation.tete); suivant;
                when '4' => clear_screen(black); affichageCommandeEnAttenteReglement(arbreClient); suivant;
                when '5' => clear_screen(black); visuCommandeArchivee; visuCommandeAnnulee; suivant;
-               when '6' => clear_screen(black); calculBilanCA; suivant;
+               when '6' => clear_screen(black); calculBilanCA(commandeEnAttenteDeFacturation.tete, arbreClient); suivant;
                when 'D' | 'd' => seDeconnecter(userConnecte, catConnectee, pseudoConnecte); suivant;
                when others => put_line("Choix non propose"); suivant;
             end case;
