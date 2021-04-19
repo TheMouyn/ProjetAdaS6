@@ -290,6 +290,21 @@ package body gestion_personnel is
    procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo) is
       -- permet de modifier le record T_personnel et ajouter le pseudo dans la file
 
+      function estDejaOublie(tete : in T_PteurPseudo; lePseudo : in T_mot) return boolean is
+         -- permet de return true si le pseudo est deja dans la fileMDPOublie
+
+      begin -- estDejaOublie
+         if tete /= null then
+            if tete.val = lePseudo then
+               return TRUE;
+            else
+               return (false or estDejaOublie(tete.suiv, lePseudo));
+            end if;
+         else
+            return false;
+         end if;
+      end estDejaOublie;
+
       procedure rechercheChangement(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
          -- permet de rechercher dans la liste et de changer le boolean mdpFaux
 
@@ -314,10 +329,14 @@ package body gestion_personnel is
       new_line;
 
       if employeExiste(tete, lePseudo) then
-         rechercheChangement(tete, lePseudo);
-         enfilerPseudo(file, lePseudo);
-         put_line("Un nouveau mot de passe vous sera attribue par Le Grand Magicien");
-         put_line("Cependant, pour l'heure votre compte est bloque");
+         if not estDejaOublie(file.tete, lePseudo) then
+            rechercheChangement(tete, lePseudo);
+            enfilerPseudo(file, lePseudo);
+            put_line("Un nouveau mot de passe vous sera attribue par Le Grand Magicien");
+            put_line("Cependant, pour l'heure votre compte est bloque");
+         else
+            put_line("Ce compte est déjà bloquer, un nouveau mot de passe vous sera attribue");
+         end if;
 
       else
          put_line("Cet employe n'existe pas dans le logiciel");
@@ -408,7 +427,7 @@ package body gestion_personnel is
 
                   put_line("Veuillez saisir votre mot de passe");
                   put("=> ");
-                  
+
                   begin
                   get_line(unMot, k);
                   exception
