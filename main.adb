@@ -156,7 +156,7 @@ begin -- main
             case choix2 is
                when '1' => clear_screen(black); afficherStock(leStock); suivant;
                when '2' => clear_screen(black); visualisationBesoin(tabBesoin); suivant;
-               when '3' => clear_screen(black); reapprovisionnementStock(leStock); suivant;
+               when '3' => clear_screen(black); reapprovisionnementStock(leStock, tabBesoin); suivant;
                when 'D' | 'd' => seDeconnecter(userConnecte, catConnectee, pseudoConnecte); suivant;
                when others => put_line("Choix non propose"); suivant;
             end case;
