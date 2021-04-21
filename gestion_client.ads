@@ -19,7 +19,7 @@ package gestion_client is
 
    -- prototype des procedures et fonctions
    procedure initClient(racine : in out T_arbreClient);
-   procedure initCommandeEnAttenteDeReglement(racine : in out T_arbreClient);
+   procedure initCommandeEnAttenteDeReglement(racine : in T_arbreClient);
    function clientExiste(racine : in T_arbreClient; identite : in T_identite) return boolean;
    procedure ajoutClient(racine : in out T_arbreClient; identite : in T_identite);
    procedure nouvelleCommande(fileCommandeEnAttente : in out T_fileCommande; racineClient : in out T_arbreClient; nuCommande : in out integer);
@@ -29,8 +29,8 @@ package gestion_client is
    procedure affichageCommandeEnAttenteReglement(racine : in T_arbreClient);
    procedure visuClient(racine : in T_arbreClient);
    procedure visuCommandeUtilisateur(teteFacture : in T_PteurCommande; racine : in T_arbreClient; pseudoConnecte : in T_mot);
-   procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in out T_arbreClient; stock : in T_table_article);
-   procedure reglementCommande(arbreClient : in out T_arbreClient);
+   procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in T_arbreClient; stock : in T_table_article);
+   procedure reglementCommande(arbreClient : in T_arbreClient);
    procedure calculBilanCA(teteFacture : in T_PteurCommande; arbreClient : in T_arbreClient);
 
 end gestion_client;

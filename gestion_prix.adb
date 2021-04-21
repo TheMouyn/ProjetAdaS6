@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
+with ada.text_io, ada.integer_text_io, aleatoire;
+use ada.text_io, ada.integer_text_io, aleatoire;
 
 
 package body gestion_prix is

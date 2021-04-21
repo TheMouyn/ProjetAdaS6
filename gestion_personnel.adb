@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire, ada.unchecked_Deallocation;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, nt_console, aleatoire;
+with ada.text_io, nt_console, aleatoire, ada.unchecked_Deallocation;
+use ada.text_io, nt_console, aleatoire;
 
 
 package body gestion_personnel is
@@ -287,7 +287,7 @@ package body gestion_personnel is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo) is
+   procedure MDPOublie(tete : in T_PteurPersonnel; file : in out T_filePseudo) is
       -- permet de modifier le record T_personnel et ajouter le pseudo dans la file
 
       function estDejaOublie(tete : in T_PteurPseudo; lePseudo : in T_mot) return boolean is
@@ -305,7 +305,7 @@ package body gestion_personnel is
          end if;
       end estDejaOublie;
 
-      procedure rechercheChangement(tete : in out T_PteurPersonnel; lePseudo : in T_mot) is
+      procedure rechercheChangement(tete : in T_PteurPersonnel; lePseudo : in T_mot) is
          -- permet de rechercher dans la liste et de changer le boolean mdpFaux
 
       begin -- rechercheChangement
@@ -373,7 +373,7 @@ package body gestion_personnel is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure bloquageCompte(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot) is
+   procedure bloquageCompte(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot) is
       -- permet de bloquer un compte d'ajouter le pseudo dans la liste des mdp a generer
 
    begin -- bloquageCompte
@@ -394,7 +394,7 @@ package body gestion_personnel is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure seConnecter(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot) is
+   procedure seConnecter(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot) is
       -- permet de se connecter et de modifier les variables de sessions
 
       lePseudo : T_mot := (others => ' ');
@@ -497,10 +497,10 @@ package body gestion_personnel is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure genererMDP(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo) is
+   procedure genererMDP(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo) is
       -- permet de traiter le premier element de la list afin de saisir un nouveau mdp pour l'employer
 
-      procedure remplacementEmploye(tete : in out T_PteurPersonnel; lePersonnel : in T_personnel) is
+      procedure remplacementEmploye(tete : in T_PteurPersonnel; lePersonnel : in T_personnel) is
 
       begin -- remplacementEmploye
          if tete /= null then

@@ -1,5 +1,5 @@
-with ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande, nt_console;
-use ada.text_io, ada.integer_text_io, ada.float_text_io, outils, gestion_prix, gestion_commande, nt_console;
+with ada.text_io, ada.integer_text_io, nt_console;
+use ada.text_io, ada.integer_text_io, nt_console;
 
 package body gestion_client is
 
@@ -82,9 +82,9 @@ package body gestion_client is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure initCommandeEnAttenteDeReglement(racine : in out T_arbreClient) is
+   procedure initCommandeEnAttenteDeReglement(racine : in T_arbreClient) is
       -- ne peut etre utiliser que apres initialisation des data des clients
-      procedure mettreDansLArbre(racine : in out T_arbreClient; identite : in T_identite; nuCommande : in integer; article : in T_table_article; preparateur : in T_mot; prix : in T_prix) is
+      procedure mettreDansLArbre(racine : in T_arbreClient; identite : in T_identite; nuCommande : in integer; article : in T_table_article; preparateur : in T_mot; prix : in T_prix) is
 
       begin -- mettreDansLArbre
 
@@ -607,10 +607,10 @@ package body gestion_client is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in out T_arbreClient; stock : in T_table_article) is
+   procedure facturationCommande(fileFacture : in out T_fileCommande; arbreClient : in T_arbreClient; stock : in T_table_article) is
       -- permet la facturation d'une commande
 
-      procedure ajoutCommandeClient(racine : in out T_arbreClient; laCommande : in T_commande) is
+      procedure ajoutCommandeClient(racine : in T_arbreClient; laCommande : in T_commande) is
          -- permet d'ajouter une commande dans a la fin de la liste des commande en attente pour un client specifique
 
       begin -- ajoutCommandeClient
@@ -669,7 +669,7 @@ package body gestion_client is
 
 -- ----------------------------------------------------------------------------------------------
 
-   procedure reglementCommande(arbreClient : in out T_arbreClient) is
+   procedure reglementCommande(arbreClient : in T_arbreClient) is
       -- permet d'effectuer le reglement d'une commande
 
       function pointeurClient(racine : in T_arbreClient; leClient : in T_identite) return T_arbreClient is
@@ -693,6 +693,8 @@ package body gestion_client is
             else
                return pointeurClient(racine.fd, leClient);
             end if;
+         else
+            return null;
          end if;
 
       end pointeurClient;

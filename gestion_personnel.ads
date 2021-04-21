@@ -44,11 +44,11 @@ package gestion_personnel is
    procedure nouvelleEmbauche(tete : in out T_PteurPersonnel);
    procedure suppressionEmploye(tete : in out T_PteurPersonnel);
    procedure enfilerPseudo(file: in out T_filePseudo; lePseudo : in T_mot);
-   procedure MDPOublie(tete : in out T_PteurPersonnel; file : in out T_filePseudo);
+   procedure MDPOublie(tete : in T_PteurPersonnel; file : in out T_filePseudo);
    function recupereEmploye(tete : in T_PteurPersonnel; lePseudo : in T_mot) return T_personnel;
-   procedure bloquageCompte(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot);
-   procedure seConnecter(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot);
+   procedure bloquageCompte(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; lePseudo : in T_mot);
+   procedure seConnecter(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo; userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot);
    procedure seDeconnecter(userConnecte : in out boolean; catConnectee : in out T_categorie; pseudoConnecte : in out T_mot);
-   procedure genererMDP(tete : in out T_PteurPersonnel; fileMDPOublie : in out T_filePseudo);
+   procedure genererMDP(tete : in T_PteurPersonnel; fileMDPOublie : in out T_filePseudo);
 
 end gestion_personnel;
